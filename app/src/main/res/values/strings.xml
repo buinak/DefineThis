@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DefineThis</string>
+    <string name="writeaword_hint">Write a word here!</string>
+    <string name="define">Define</string>
+</resources>
