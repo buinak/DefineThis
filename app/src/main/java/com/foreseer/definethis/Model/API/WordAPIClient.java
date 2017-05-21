@@ -1,4 +1,4 @@
-package com.foreseer.definethis.API;
+package com.foreseer.definethis.Model.API;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;

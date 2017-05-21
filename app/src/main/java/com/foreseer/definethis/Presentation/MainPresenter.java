@@ -1,4 +1,4 @@
-package com.foreseer.definethis;
+package com.foreseer.definethis.Presentation;
 
 /**
  * Created by Konstantin "Foreseer" Buinak on 21.05.2017.
@@ -6,4 +6,5 @@ package com.foreseer.definethis;
 
 public interface MainPresenter {
     void onWordEntered(String word);
+    void onEditTextChanged(String text);
 }

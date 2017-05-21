@@ -1,4 +1,4 @@
-package com.foreseer.definethis.API.JSONSchema;
+package com.foreseer.definethis.Model.API.JSONSchema;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -8,12 +8,13 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Definition {
+
     @SerializedName("definition")
     @Expose
     private String definition;
     @SerializedName("partOfSpeech")
     @Expose
-    private String partOfSpeech;
+    private Object partOfSpeech;
 
     public String getDefinition() {
         return definition;
@@ -23,11 +24,11 @@ public class Definition {
         this.definition = definition;
     }
 
-    public String getPartOfSpeech() {
+    public Object getPartOfSpeech() {
         return partOfSpeech;
     }
 
-    public void setPartOfSpeech(String partOfSpeech) {
+    public void setPartOfSpeech(Object partOfSpeech) {
         this.partOfSpeech = partOfSpeech;
     }
 }
