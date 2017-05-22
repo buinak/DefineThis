@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -80,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 hideSoftKeyboardAndDefocus(v);
             }
         });
+
+        textView.setMovementMethod(new ScrollingMovementMethod());
 
         presenter = new MainPresenterImpl(this);
     }
