@@ -12,6 +12,8 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -140,7 +142,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showDefinition(String definition) {
+
         textView.setText(definition);
+        Animation a = AnimationUtils.loadAnimation(this, R.anim.textview_anim);
+        a.reset();
+        textView.clearAnimation();
+        textView.startAnimation(a);
     }
 
     @Override
