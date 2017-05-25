@@ -51,13 +51,8 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
 
     @Override
     public void onWordDefinitionReceived(Definition definition) {
-
-        String builder = "1, " +
-                definition.getPartOfSpeech() +
-                ": " +
-                definition.getDefinition();
-
-        view.showDefinition(builder);
+        view.showPartOfSpeech(definition.getPartOfSpeech().toString());
+        view.showDefinition(definition.getDefinition());
         view.makeProgressBarGreen();
         view.hideProgressBar();
     }

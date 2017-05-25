@@ -5,6 +5,7 @@ import com.foreseer.definethis.Model.API.JSONSchema.Word;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.HEAD;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
@@ -19,4 +20,5 @@ public interface WordsAPIService {
     @Headers({"X-Mashape-Key: zE3eij0pGxmshZPpWDkpbUHYFifOp1erDKujsnUS5tShUfwC24",
               "Accept: application/json"})
     Observable<Word> getWordDefinition(@Path("word") String word);
+
 }

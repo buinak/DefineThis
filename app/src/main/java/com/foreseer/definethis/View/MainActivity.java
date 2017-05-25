@@ -1,5 +1,6 @@
 package com.foreseer.definethis.View;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -12,8 +13,8 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.ViewAnimationUtils;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -25,6 +26,7 @@ import com.foreseer.definethis.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.codetail.widget.RevealLinearLayout;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
@@ -33,10 +35,19 @@ public class MainActivity extends AppCompatActivity implements MainView {
     EditText editText;
 
     @BindView(R.id.textView_definition)
-    TextView textView;
+    TextView textViewDefinition;
+
+    @BindView(R.id.textView_partOfSpeech)
+    TextView textViewPartOfSpeech;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
+    @BindView(R.id.revealLayoutPartOfSpeech)
+    RevealLinearLayout revealLinearLayoutPartOfSpeech;
+
+    @BindView(R.id.revealLayoutDefinition)
+    RevealLinearLayout revealLinearLayoutDefinition;
 
     private MainPresenter presenter;
 
@@ -84,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
             }
         });
 
-        textView.setMovementMethod(new ScrollingMovementMethod());
+        textViewDefinition.setMovementMethod(new ScrollingMovementMethod());
 
         presenter = new MainPresenterImpl(this);
     }
@@ -143,11 +154,44 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void showDefinition(String definition) {
 
-        textView.setText(definition);
-        Animation a = AnimationUtils.loadAnimation(this, R.anim.textview_anim);
-        a.reset();
-        textView.clearAnimation();
-        textView.startAnimation(a);
+        textViewDefinition.setText(definition);
+    }
+
+    @Override
+    public void showPartOfSpeech(String partOfSpeech) {
+        textViewPartOfSpeech.setText(partOfSpeech);
+    }
+
+    @Override
+    public void animate() {
+        revealLayout(revealLinearLayoutPartOfSpeech);
+        revealLayout(revealLinearLayoutDefinition);
+    }
+
+    private void revealLayout(RevealLinearLayout layout){
+        final int childCount = layout.getChildCount();
+        for (int i = 0; i < childCount; i++){
+            View view = layout.getChildAt(i);
+            revealView(view);
+        }
+    }
+
+    private void revealView(View view){
+        // get the center for the clipping circle
+        int cx = (view.getLeft() + view.getRight()) / 2;
+        int cy = (view.getTop() + view.getBottom()) / 2;
+
+        // get the final radius for the clipping circle
+        int dx = Math.max(cx, view.getWidth());
+        int dy = Math.max(cy, view.getHeight());
+        float finalRadius = (float) Math.hypot(dx, dy);
+
+        // Android native animator
+        Animator animator =
+                ViewAnimationUtils.createCircularReveal(view, view.getLeft(), view.getTop(), 0, finalRadius);
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.setDuration(500);
+        animator.start();
     }
 
     @Override
@@ -158,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void resetDefinitionTextView() {
-        textView.setText("");
+        textViewDefinition.setText("");
     }
 
     @Override

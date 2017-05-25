@@ -6,8 +6,12 @@ package com.foreseer.definethis.View;
 
 public interface MainView {
     void showDefinition(String definition);
+    void showPartOfSpeech(String partOfSpeech);
+    void animate();
+
     void showError(String error);
     void resetError();
+
     void resetDefinitionTextView();
 
     void showProgressBar();

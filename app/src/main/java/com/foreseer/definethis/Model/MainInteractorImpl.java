@@ -49,7 +49,7 @@ public class MainInteractorImpl implements MainInteractor {
                 .subscribe(result -> {
                     if (result.getWord().equals(lastRequested)) {
                         if (result.getDefinitions().size() == 0){
-                            listener.onWordNotFound(result.getWord());
+                            listener.onWordNotFound(lastRequested);
                         }
                         else if (result.getDefinitions().size() == 1) {
                             listener.onWordDefinitionReceived(result.getDefinitions().get(0));
