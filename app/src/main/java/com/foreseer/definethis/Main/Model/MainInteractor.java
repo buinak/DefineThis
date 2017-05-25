@@ -1,6 +1,6 @@
-package com.foreseer.definethis.Model;
+package com.foreseer.definethis.Main.Model;
 
-import com.foreseer.definethis.Model.API.JSONSchema.Definition;
+import com.foreseer.definethis.Main.Model.API.JSONSchema.Definition;
 
 import java.util.List;
 
@@ -18,6 +18,9 @@ public interface MainInteractor {
     interface MainInteractorListener {
         void onWordDefinitionReceived(Definition definition);
         void onWordDefinitionsReceived(List<Definition> definitions);
+
+        void onEmptyRequestReceived();
+
         void onRequestStarted();
         void onWordNotFound(String word);
         void onError(String error, boolean custom);

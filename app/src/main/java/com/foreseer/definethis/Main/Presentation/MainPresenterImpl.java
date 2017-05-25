@@ -1,9 +1,9 @@
-package com.foreseer.definethis.Presentation;
+package com.foreseer.definethis.Main.Presentation;
 
-import com.foreseer.definethis.Model.API.JSONSchema.Definition;
-import com.foreseer.definethis.Model.MainInteractor;
-import com.foreseer.definethis.Model.MainInteractorImpl;
-import com.foreseer.definethis.View.MainView;
+import com.foreseer.definethis.Main.Model.API.JSONSchema.Definition;
+import com.foreseer.definethis.Main.Model.MainInteractor;
+import com.foreseer.definethis.Main.Model.MainInteractorImpl;
+import com.foreseer.definethis.Main.View.MainView;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,16 +32,18 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
     @Override
     public void onEditTextChanged(String text) {
         view.makeProgressBarGrey();
+        view.resetPartOfSpeechTextView();
+        view.resetDefinitionTextView();
         if (validateText(text)){
             model.onTextChanged(text);
         }
     }
 
     private boolean validateText(String text){
-        if (text.equals("")){
+        /*if (text.equals("")){
             view.showError("Can't define nothing!");
             return false;
-        }
+        }*/
         if (StringUtils.isNumeric(text)){
             view.showError("Numbers not allowed!");
             return false;
@@ -51,8 +53,13 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
 
     @Override
     public void onWordDefinitionReceived(Definition definition) {
-        view.showPartOfSpeech(definition.getPartOfSpeech().toString());
+        view.showPartOfSpeech(definition.getPartOfSpeech());
         view.showDefinition(definition.getDefinition());
+        viewFinish();
+    }
+
+    private void viewFinish(){
+        view.animate();
         view.makeProgressBarGreen();
         view.hideProgressBar();
     }
@@ -71,14 +78,20 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
             i++;
         }
         view.showDefinition(builder.toString());
-        view.makeProgressBarGreen();
+        viewFinish();
+    }
+
+    @Override
+    public void onEmptyRequestReceived() {
         view.hideProgressBar();
+        view.makeProgressBarGrey();
     }
 
     @Override
     public void onRequestStarted() {
         view.resetError();
         view.resetDefinitionTextView();
+        view.resetPartOfSpeechTextView();
         view.showProgressBar();
     }
 

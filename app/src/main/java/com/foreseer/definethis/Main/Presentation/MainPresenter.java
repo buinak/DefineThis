@@ -1,4 +1,4 @@
-package com.foreseer.definethis.Presentation;
+package com.foreseer.definethis.Main.Presentation;
 
 /**
  * Created by Konstantin "Foreseer" Buinak on 21.05.2017.
