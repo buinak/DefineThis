@@ -19,4 +19,10 @@ public interface WordsAPIService {
     Observable<Word> getWordDefinition(@Query("headword") String word,
                                        @Query("limit") int limit);
 
+    @GET("/v2/dictionaries/laad3/entries")
+    @Headers("Accept: application/json")
+    Observable<Word> getWordDefinition(@Query("headword") String word,
+                                       @Query("limit") int limit,
+                                       @Query("part_of_speech") String partOfSpeech);
+
 }
