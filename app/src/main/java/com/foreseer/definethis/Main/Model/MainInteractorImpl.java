@@ -44,6 +44,16 @@ public class MainInteractorImpl implements MainInteractor {
 
     @Override
     public void onWordDefinitionRequested(String word) {
+        if (word.contains(" ")){
+            if (word.split(" ").length != 2){
+                listener.onIncorrectWord();
+                return;
+            }
+            if (!word.startsWith("to ")){
+                listener.onIncorrectWord();
+                return;
+            }
+        }
 
         if (!word.equals("")) {
             listener.onRequestStarted();
@@ -70,10 +80,10 @@ public class MainInteractorImpl implements MainInteractor {
     private void processResult(Word word) {
         String headword = Utils.parseHeadwordOutOfURL(word.getUrl());
         if (headword.equals(lastRequested) && !headword.equals("") && !lastRequested.equals("")) {
-            lastRequested = "";
             if (word.getResults().size() == 0) {
                 listener.onWordNotFound(lastRequested);
             } else {
+                lastRequested = "";
                 String definition;
                 String partOfSpeech;
                 if (word.getResults().get(0).getSenses().get(0).getDefinition() != null) {

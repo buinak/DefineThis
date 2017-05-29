@@ -101,6 +101,11 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
     }
 
     @Override
+    public void onIncorrectWord() {
+        onError("Inoorrect word! Please, type one word to be defined.", true);
+    }
+
+    @Override
     public void onError(String error, boolean custom) {
         view.hideProgressBar();
         view.makeProgressBarGrey();

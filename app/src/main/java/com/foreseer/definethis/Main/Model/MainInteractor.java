@@ -23,6 +23,7 @@ public interface MainInteractor {
 
         void onRequestStarted();
         void onWordNotFound(String word);
+        void onIncorrectWord();
         void onError(String error, boolean custom);
     }
 }
