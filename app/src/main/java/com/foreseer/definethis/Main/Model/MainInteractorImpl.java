@@ -19,6 +19,7 @@ import io.reactivex.subjects.PublishSubject;
  *  e-mail (preferred): fforeseer@gmail.com
  */
 
+
 public class MainInteractorImpl implements MainInteractor {
     private MainInteractorListener listener;
 
@@ -93,7 +94,6 @@ public class MainInteractorImpl implements MainInteractor {
                     definition = word.getResults().get(0).getSenses().get(0).getSubsenses().get(0).getDefinition();
                     partOfSpeech = word.getResults().get(0).getPartOfSpeech();
                 }
-
                 listener.onWordDefinitionReceived(new Definition(definition, partOfSpeech));
             }
         }
