@@ -7,6 +7,8 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,9 +26,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.foreseer.definethis.Main.Model.API.JSONSchema.Definition;
 import com.foreseer.definethis.Main.Presentation.MainPresenter;
 import com.foreseer.definethis.Main.Presentation.MainPresenterImpl;
+import com.foreseer.definethis.Main.View.RecyclerView.Adapter;
 import com.foreseer.definethis.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,23 +45,20 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.editText_word)
     EditText editText;
 
-    @BindView(R.id.textView_definition)
-    TextView textViewDefinition;
-
-    @BindView(R.id.textView_partOfSpeech)
-    TextView textViewPartOfSpeech;
-
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
-    @BindView(R.id.revealLayoutPartOfSpeech)
-    RevealLinearLayout revealLinearLayoutPartOfSpeech;
-
-    @BindView(R.id.revealLayoutDefinition)
-    RevealLinearLayout revealLinearLayoutDefinition;
-
     @BindView(R.id.tToolbar)
     Toolbar toolbar;
+
+    /* RECYCLER VIEW */
+
+    @BindView(R.id.recyclerView_definitions)
+    RecyclerView recyclerView;
+
+    // RECYCLER VIEW RELATED STUFF
+    private LinearLayoutManager layoutManager;
+    private Adapter recyclerAdapter;
 
     private MainPresenter presenter;
 
@@ -66,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         ButterKnife.bind(this);
 
         initToolbar();
+        initializeRecyclerView();
 
         // Start searching for the word if enter on the keyboard is pressed
         editText.setOnKeyListener((v, keyCode, event) -> {
@@ -104,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
             }
         });
 
-        textViewDefinition.setMovementMethod(new ScrollingMovementMethod());
+        // what does this do?
+        //textViewDefinition.setMovementMethod(new ScrollingMovementMethod());
 
         presenter = new MainPresenterImpl(this);
     }
@@ -134,44 +140,21 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void showDefinition(String definition) {
-
-        textViewDefinition.setText(definition);
+    public void showDefinitions(List<Definition> definitionList) {
+        recyclerAdapter = new Adapter(definitionList);
+        recyclerView.setAdapter(recyclerAdapter);
     }
 
     @Override
-    public void showPartOfSpeech(String partOfSpeech) {
-        textViewPartOfSpeech.setText(partOfSpeech);
-    }
-
-    @Override
-    public void animate() {
-        revealLayout(revealLinearLayoutPartOfSpeech);
-        revealLayout(revealLinearLayoutDefinition);
-    }
-
-    private void revealLayout(RevealLinearLayout layout){
-        final int childCount = layout.getChildCount();
-        for (int i = 0; i < childCount; i++){
-            View view = layout.getChildAt(i);
-            revealView(view);
-        }
+    public void resetDefinitions() {
+        recyclerAdapter = new Adapter(new ArrayList<>());
+        recyclerView.setAdapter(recyclerAdapter);
     }
 
     @Override
     public void showError(String error) {
         //Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
         editText.setError(error);
-    }
-
-    @Override
-    public void resetDefinitionTextView() {
-        textViewDefinition.setText("");
-    }
-
-    @Override
-    public void resetPartOfSpeechTextView() {
-        textViewPartOfSpeech.setText("");
     }
 
     @Override
@@ -207,22 +190,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private void revealView(View view){
-        // get the center for the clipping circle
-        int cx = (view.getLeft() + view.getRight()) / 2;
-        int cy = (view.getTop() + view.getBottom()) / 2;
-
-        // get the final radius for the clipping circle
-        int dx = Math.max(cx, view.getWidth());
-        int dy = Math.max(cy, view.getHeight());
-        float finalRadius = (float) Math.hypot(dx, dy);
-
-        // Android native animator
-        Animator animator =
-                ViewAnimationUtils.createCircularReveal(view, view.getLeft(), view.getTop(), 0, finalRadius);
-        animator.setInterpolator(new AccelerateDecelerateInterpolator());
-        animator.setDuration(500);
-        animator.start();
+    private void initializeRecyclerView(){
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
 

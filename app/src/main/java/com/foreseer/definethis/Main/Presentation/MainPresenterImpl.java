@@ -7,6 +7,7 @@ import com.foreseer.definethis.Main.View.MainView;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,8 +33,7 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
     @Override
     public void onEditTextChanged(String text) {
         view.makeProgressBarGrey();
-        view.resetPartOfSpeechTextView();
-        view.resetDefinitionTextView();
+        view.resetDefinitions();
         if (validateText(text)){
             model.onTextChanged(text);
         }
@@ -53,31 +53,21 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
 
     @Override
     public void onWordDefinitionReceived(Definition definition) {
-        view.showPartOfSpeech(definition.getPartOfSpeech());
-        view.showDefinition(definition.getDefinition());
+        List<Definition> list = new ArrayList<>();
+        list.add(definition);
+
+        view.showDefinitions(list);
         viewFinish();
     }
 
     private void viewFinish(){
-        view.animate();
         view.makeProgressBarGreen();
         view.hideProgressBar();
     }
 
     @Override
     public void onWordDefinitionsReceived(List<Definition> definitions) {
-        StringBuilder builder = new StringBuilder();
-        int i = 1;
-        for (Definition definition : definitions){
-            builder.append(i);
-            builder.append(", ");
-            builder.append(definition.getPartOfSpeech());
-            builder.append(": ");
-            builder.append(definition.getDefinition());
-            builder.append(System.getProperty("line.separator"));
-            i++;
-        }
-        view.showDefinition(builder.toString());
+        view.showDefinitions(definitions);
         viewFinish();
     }
 
@@ -90,8 +80,7 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
     @Override
     public void onRequestStarted() {
         view.resetError();
-        view.resetDefinitionTextView();
-        view.resetPartOfSpeechTextView();
+        view.resetDefinitions();
         view.showProgressBar();
     }
 

@@ -11,6 +11,10 @@ public class Utils {
     private Utils() {}
 
     public static String parseHeadwordOutOfURL(String url){
-        return url.substring(url.indexOf("=") + 1, url.indexOf("&"));
+        if (url.contains("&")) {
+            return url.substring(url.indexOf("=") + 1, url.indexOf("&"));
+        } else {
+            return url.substring(url.indexOf("=") + 1);
+        }
     }
 }

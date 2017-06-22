@@ -1,9 +1,12 @@
 package com.foreseer.definethis.Main.Model;
 
 import com.foreseer.definethis.Main.Model.API.JSONSchema.Definition;
+import com.foreseer.definethis.Main.Model.API.JSONSchema.Result;
 import com.foreseer.definethis.Main.Model.API.JSONSchema.Word;
 import com.foreseer.definethis.Main.Model.API.WordAPIClient;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -70,7 +73,7 @@ public class MainInteractorImpl implements MainInteractor {
         }
         lastRequested = word;
 
-        requestDefinition(word, partOfSpeech, 1)
+        requestDefinition(word, partOfSpeech, 1000)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
@@ -82,6 +85,7 @@ public class MainInteractorImpl implements MainInteractor {
 
     private void processResult(Word word) {
         String headword = Utils.parseHeadwordOutOfURL(word.getUrl());
+        System.out.println();
         if (headword.equals(lastRequested) && !headword.equals("") && !lastRequested.equals("")) {
             if (word.getResults().size() == 0) {
                 listener.onWordNotFound(lastRequested);
@@ -89,14 +93,15 @@ public class MainInteractorImpl implements MainInteractor {
                 lastRequested = "";
                 String definition;
                 String partOfSpeech;
-                if (word.getResults().get(0).getSenses().get(0).getDefinition() != null) {
-                    definition = word.getResults().get(0).getSenses().get(0).getDefinition();
-                    partOfSpeech = word.getResults().get(0).getPartOfSpeech();
-                } else {
-                    definition = word.getResults().get(0).getSenses().get(0).getSubsenses().get(0).getDefinition();
-                    partOfSpeech = word.getResults().get(0).getPartOfSpeech();
+                List<Definition> definitionList = new ArrayList<>();
+                for (Result result : word.getResults()){
+                    if (result.getSenses().get(0).getDefinition() != null){
+                        definitionList.add(new Definition(result.getSenses().get(0).getDefinition(), result.getPartOfSpeech()));
+                    } else {
+                        definitionList.add(new Definition(result.getSenses().get(0).getSubsenses().get(0).getDefinition(), result.getPartOfSpeech()));
+                    }
                 }
-                listener.onWordDefinitionReceived(new Definition(definition, partOfSpeech));
+                listener.onWordDefinitionsReceived(definitionList);
             }
         }
     }
