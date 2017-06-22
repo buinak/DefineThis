@@ -75,7 +75,9 @@ public class MainInteractorImpl implements MainInteractor {
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
                     processResult(result);
-                }, e -> listener.onError(e.getMessage(), false));
+                }, e -> {
+                    listener.onError(e.getMessage(), false);
+                });
     }
 
     private void processResult(Word word) {
@@ -101,9 +103,9 @@ public class MainInteractorImpl implements MainInteractor {
 
     private Observable<Word> requestDefinition(String word, String partOfSpeech, int limit){
         if (!partOfSpeech.equals("")) {
-            return WordAPIClient.getApiClient().getWordDefinition(word, 1, partOfSpeech);
+            return WordAPIClient.getApiClient().getWordDefinition(word, limit, partOfSpeech, WordAPIClient.API_KEY);
         } else {
-            return WordAPIClient.getApiClient().getWordDefinition(word, 1);
+            return WordAPIClient.getApiClient().getWordDefinition(word, limit, WordAPIClient.API_KEY);
         }
     }
 

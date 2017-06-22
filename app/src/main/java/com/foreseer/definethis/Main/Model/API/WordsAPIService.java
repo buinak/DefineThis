@@ -17,12 +17,14 @@ public interface WordsAPIService {
     @GET("/v2/dictionaries/laad3/entries")
     @Headers("Accept: application/json")
     Observable<Word> getWordDefinition(@Query("headword") String word,
-                                       @Query("limit") int limit);
+                                       @Query("limit") int limit,
+                                       @Query("apikey") String apiKey);
 
     @GET("/v2/dictionaries/laad3/entries")
     @Headers("Accept: application/json")
     Observable<Word> getWordDefinition(@Query("headword") String word,
                                        @Query("limit") int limit,
-                                       @Query("part_of_speech") String partOfSpeech);
+                                       @Query("part_of_speech") String partOfSpeech,
+                                       @Query("apikey") String apiKey);
 
 }
