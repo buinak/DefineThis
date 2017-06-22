@@ -2,7 +2,7 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Main.View.MainActivity"
+    tools:context=".MainScreen.View.MainActivity"
     android:id="@+id/menu">
     <item
         android:id="@+id/action_history"

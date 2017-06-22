@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusableInTouchMode="true"
-    tools:context=".Main.View.MainActivity">
+    tools:context=".MainScreen.View.MainActivity">
 
     <include
         android:id="@+id/tToolbar"

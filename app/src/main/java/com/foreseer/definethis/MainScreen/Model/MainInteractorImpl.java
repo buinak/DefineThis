@@ -1,0 +1,128 @@
+package com.foreseer.definethis.MainScreen.Model;
+
+import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Definition;
+import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Result;
+import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Word;
+import com.foreseer.definethis.MainScreen.Model.API.WordAPIClient;
+import com.foreseer.definethis.Storage.StorageHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
+
+/**
+ * Created by Konstantin "Foreseer" Buinak on 21.05.2017.
+ * For any questions, feel free to reach me using any of my contacts.
+ * Contacts:
+ *  e-mail (preferred): fforeseer@gmail.com
+ */
+
+
+public class MainInteractorImpl implements MainInteractor {
+    private MainInteractorListener listener;
+
+    private PublishSubject<String> subject;
+    private String lastRequested;
+
+    public MainInteractorImpl(MainInteractorListener listener) {
+        this.listener = listener;
+        lastRequested = "";
+        initializePublishSubject();
+    }
+
+    private void initializePublishSubject(){
+        subject = PublishSubject.create();
+        subject.debounce(500, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(s -> {
+                    listener.onRequestStarted();
+                    onWordDefinitionRequested(s);
+                });
+    }
+
+    @Override
+    public void onWordDefinitionRequested(String word) {
+        word = word.toLowerCase();
+        if (word.contains(" ")){
+            if (word.split(" ").length != 2){
+                listener.onIncorrectWord();
+                return;
+            }
+            if (!word.startsWith("to ")){
+                listener.onIncorrectWord();
+                return;
+            }
+        }
+
+        if (!word.equals("")) {
+            listener.onRequestStarted();
+        } else {
+            listener.onEmptyRequestReceived();
+            return;
+        }
+
+        String partOfSpeech = "";
+        if (word.contains("to")){
+            partOfSpeech = "verb";
+            word = word.substring(word.indexOf(" ") + 1);
+        }
+        lastRequested = word;
+
+        requestDefinition(word, partOfSpeech, 1000)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(result -> {
+                    processResult(result);
+                }, e -> {
+                    listener.onError(e.getMessage(), false);
+                });
+    }
+
+    private void processResult(Word word) {
+        String headword = Utils.parseHeadwordOutOfURL(word.getUrl());
+        System.out.println();
+        if (headword.equals(lastRequested) && !headword.equals("") && !lastRequested.equals("")) {
+            if (word.getResults().size() == 0) {
+                listener.onWordNotFound(lastRequested);
+            } else {
+                lastRequested = "";
+                String definition;
+                String partOfSpeech;
+                List<Definition> definitionList = new ArrayList<>();
+                for (Result result : word.getResults()){
+                    if (result.getSenses().get(0).getDefinition() != null){
+                        definitionList.add(new Definition(result.getSenses().get(0).getDefinition(), result.getPartOfSpeech()));
+                    } else {
+                        definitionList.add(new Definition(result.getSenses().get(0).getSubsenses().get(0).getDefinition(), result.getPartOfSpeech()));
+                    }
+                }
+                StorageHandler.save(headword, definitionList);
+                listener.onWordDefinitionsReceived(definitionList);
+            }
+        }
+    }
+
+    private Observable<Word> requestDefinition(String word, String partOfSpeech, int limit){
+        if (!partOfSpeech.equals("")) {
+            return WordAPIClient.getApiClient().getWordDefinition(word, limit, partOfSpeech, WordAPIClient.API_KEY);
+        } else {
+            return WordAPIClient.getApiClient().getWordDefinition(word, limit, WordAPIClient.API_KEY);
+        }
+    }
+
+
+    @Override
+    public void onTextChanged(String text) {
+        if (!text.equals("")) {
+            subject.onNext(text);
+        } else {
+            subject.onNext(text);
+        }
+    }
+}
