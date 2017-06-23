@@ -5,33 +5,35 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView_partOfSpeech"
+        android:id="@+id/textView_partOfSpeech_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
         android:text="noun"
-        android:textSize="34sp"
+        android:textSize="22sp"
         android:textStyle="italic"
         android:visibility="visible" />
 
     <TextView
-        android:id="@+id/textView_definition"
+        android:id="@+id/textView_definition_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
         android:maxLines="30"
         android:scrollbars="vertical"
         android:text="cat is cat"
-        android:textSize="22sp"
+        android:textSize="15sp"
         android:visibility="visible" />
 
     <View
-        android:id="@+id/view_separator"
+        android:id="@+id/view_separator_history"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="6dp"
         android:background="@android:color/darker_gray" />
 
 </LinearLayout>

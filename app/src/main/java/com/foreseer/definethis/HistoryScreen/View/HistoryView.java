@@ -1,5 +1,6 @@
 package com.foreseer.definethis.HistoryScreen.View;
 
+import com.foreseer.definethis.HistoryScreen.View.RecyclerView.ExpandableWord;
 import com.foreseer.definethis.Storage.Models.Word;
 
 import java.util.List;
@@ -9,5 +10,5 @@ import java.util.List;
  */
 
 public interface HistoryView {
-    void displayWords(List<Word> wordList);
+    void displayWords(List<ExpandableWord> wordList);
 }

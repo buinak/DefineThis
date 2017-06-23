@@ -39,7 +39,13 @@
             android:value="com.foreseer.definethis" />
         <!-- END OF SUGAR ORM -->
 
-        <activity android:name=".HistoryScreen.View.HistoryActivity"></activity>
+        <activity android:name=".HistoryScreen.View.HistoryActivity"
+            android:parentActivityName=".MainScreen.View.MainActivity">
+            <meta-data
+                android:name="com.foreseer.definethis.MainScreen.View.MainActivity"
+                android:value="android.support.PARENT_ACTIVITY"
+                />
+        </activity>
     </application>
 
 </manifest>

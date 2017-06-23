@@ -3,8 +3,10 @@ package com.foreseer.definethis.HistoryScreen.Presentation;
 import com.foreseer.definethis.HistoryScreen.Model.HistoryInteractor;
 import com.foreseer.definethis.HistoryScreen.Model.HistoryInteractorImpl;
 import com.foreseer.definethis.HistoryScreen.View.HistoryView;
+import com.foreseer.definethis.HistoryScreen.View.RecyclerView.ExpandableWord;
 import com.foreseer.definethis.Storage.Models.Word;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +25,13 @@ public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor
     }
 
     @Override
-    public void onDefinitionsReceived(List<Word> words) {
+    public void onDefinitionsReceived(List<ExpandableWord> words) {
         view.displayWords(words);
+    }
+
+    @Override
+    public void onResetClicked() {
+        view.displayWords(new ArrayList<>());
+        interactor.resetHistory();
     }
 }

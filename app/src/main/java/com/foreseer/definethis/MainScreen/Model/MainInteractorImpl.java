@@ -67,6 +67,12 @@ public class MainInteractorImpl implements MainInteractor {
             return;
         }
 
+        if (StorageHandler.wasWordPreviouslyRequested(word)){
+            lastRequested = "";
+            listener.onWordDefinitionsReceived(StorageHandler.getDefinitions(word));
+            return;
+        }
+
         String partOfSpeech = "";
         if (word.contains("to")){
             partOfSpeech = "verb";
@@ -86,7 +92,6 @@ public class MainInteractorImpl implements MainInteractor {
 
     private void processResult(Word word) {
         String headword = Utils.parseHeadwordOutOfURL(word.getUrl());
-        System.out.println();
         if (headword.equals(lastRequested) && !headword.equals("") && !lastRequested.equals("")) {
             if (word.getResults().size() == 0) {
                 listener.onWordNotFound(lastRequested);
@@ -102,6 +107,7 @@ public class MainInteractorImpl implements MainInteractor {
                         definitionList.add(new Definition(result.getSenses().get(0).getSubsenses().get(0).getDefinition(), result.getPartOfSpeech()));
                     }
                 }
+                processPartOfSpeech(definitionList);
                 StorageHandler.save(headword, definitionList);
                 listener.onWordDefinitionsReceived(definitionList);
             }
@@ -123,6 +129,25 @@ public class MainInteractorImpl implements MainInteractor {
             subject.onNext(text);
         } else {
             subject.onNext(text);
+        }
+    }
+
+    /**
+     * This method processes list of definitions and fixes part of speech parts in definitions.
+     * Since the API returns null for those definitions where part of speech is not certain (abbreviations,
+     * phrases), we can guess part of speech based on contents of the definition.
+     *
+     * For example if definition contains "abbreviation" we can guess it's an abbreviation et cetera
+     *
+     * @param definitions List of definitions
+     */
+    private void processPartOfSpeech(List<Definition> definitions){
+        for (Definition definition : definitions){
+            if (definition.getPartOfSpeech() == null){
+                if (definition.getDefinition().contains("abbreviation")){
+                    definition.setPartOfSpeech("abbreviation");
+                }
+            }
         }
     }
 }

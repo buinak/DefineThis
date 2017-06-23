@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HistoryScreen.View.HistoryActivity"
+    android:id="@+id/menu_secondary">
+    <item
+        android:id="@+id/action_reset"
+        android:icon="@drawable/ic_delete_forever_black_24dp"
+        android:title="Reset"
+        app:showAsAction="ifRoom"/>
+</menu>

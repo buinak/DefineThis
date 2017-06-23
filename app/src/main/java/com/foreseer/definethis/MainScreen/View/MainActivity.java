@@ -1,6 +1,7 @@
 package com.foreseer.definethis.MainScreen.View;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -21,11 +22,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.foreseer.definethis.HistoryScreen.View.HistoryActivity;
 import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Definition;
 import com.foreseer.definethis.MainScreen.Presentation.MainPresenter;
 import com.foreseer.definethis.MainScreen.Presentation.MainPresenterImpl;
 import com.foreseer.definethis.MainScreen.View.RecyclerView.Adapter;
 import com.foreseer.definethis.R;
+import com.foreseer.definethis.Storage.Models.Word;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         ButterKnife.bind(this);
 
@@ -115,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         menuInflater.inflate(R.menu.menu, menu);
         return true;
     }
+
+
 
     @Override
     public void resetError(){
@@ -225,8 +231,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_history:
-                
+                startHistoryActivity();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return true;
+    }
+
+    private void startHistoryActivity(){
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
     }
 }
