@@ -49,25 +49,12 @@ public class MainInteractorImpl implements MainInteractor {
     @Override
     public void onWordDefinitionRequested(String word) {
         word = word.toLowerCase();
-        if (word.contains(" ")){
-            if (word.split(" ").length != 2){
-                listener.onIncorrectWord();
-                return;
-            }
-            if (!word.startsWith("to ")){
-                listener.onIncorrectWord();
-                return;
-            }
-        }
 
-        if (!word.equals("")) {
-            listener.onRequestStarted();
-        } else {
-            listener.onEmptyRequestReceived();
+        if (!validateWord(word)) {
             return;
         }
 
-        if (StorageHandler.wasWordPreviouslyRequested(word)){
+        if (isCached(word)) {
             lastRequested = "";
             listener.onWordDefinitionsReceived(StorageHandler.getDefinitions(word));
             return;
@@ -88,6 +75,34 @@ public class MainInteractorImpl implements MainInteractor {
                 }, e -> {
                     listener.onError(e.getMessage(), false);
                 });
+    }
+
+    private boolean isCached(String word) {
+        if (StorageHandler.wasWordPreviouslyRequested(word)){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validateWord(String word) {
+        if (word.contains(" ")){
+            if (word.split(" ").length != 2){
+                listener.onIncorrectWord();
+                return false;
+            }
+            if (!word.startsWith("to ")){
+                listener.onIncorrectWord();
+                return false;
+            }
+        }
+
+        if (!word.equals("")) {
+            listener.onRequestStarted();
+            return true;
+        } else {
+            listener.onEmptyRequestReceived();
+            return false;
+        }
     }
 
     private void processResult(Word word) {
@@ -146,6 +161,10 @@ public class MainInteractorImpl implements MainInteractor {
             if (definition.getPartOfSpeech() == null){
                 if (definition.getDefinition().contains("abbreviation")){
                     definition.setPartOfSpeech("abbreviation");
+                } else if (definition.getDefinition().contains("phrase")){
+                    definition.setPartOfSpeech("phrase");
+                } else {
+                    definition.setPartOfSpeech("unknown");
                 }
             }
         }
