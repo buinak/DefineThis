@@ -26,7 +26,7 @@ import com.foreseer.definethis.HistoryScreen.View.HistoryActivity;
 import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Definition;
 import com.foreseer.definethis.MainScreen.Presentation.MainPresenter;
 import com.foreseer.definethis.MainScreen.Presentation.MainPresenterImpl;
-import com.foreseer.definethis.MainScreen.View.RecyclerView.Adapter;
+import com.foreseer.definethis.MainScreen.View.RecyclerView.DefinitionAdapter;
 import com.foreseer.definethis.R;
 import com.foreseer.definethis.Storage.Models.Word;
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     // RECYCLER VIEW RELATED STUFF
     private LinearLayoutManager layoutManager;
-    private Adapter recyclerAdapter;
+    private DefinitionAdapter recyclerAdapter;
 
     private MainPresenter presenter;
 
@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu, menu);
         return true;
@@ -141,13 +142,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showDefinitions(List<Definition> definitionList) {
-        recyclerAdapter = new Adapter(definitionList);
+        recyclerAdapter = new DefinitionAdapter(definitionList);
         recyclerView.setAdapter(recyclerAdapter);
     }
 
     @Override
     public void resetDefinitions() {
-        recyclerAdapter = new Adapter(new ArrayList<>());
+        recyclerAdapter = new DefinitionAdapter(new ArrayList<>());
         recyclerView.setAdapter(recyclerAdapter);
     }
 

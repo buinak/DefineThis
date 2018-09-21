@@ -22,23 +22,23 @@ import io.codetail.widget.RevealLinearLayout;
  * Created by Konstantin "Foreseer" Buinak on 22.06.2017.
  */
 
-public class Adapter extends RecyclerView.Adapter<Adapter.DefinitionHolder> {
+public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.DefinitionHolder> {
 
     private List<Definition> definitions;
 
-    public Adapter(List<Definition> definitions) {
+    public DefinitionAdapter(List<Definition> definitions) {
         this.definitions = definitions;
     }
 
     @Override
-    public Adapter.DefinitionHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DefinitionAdapter.DefinitionHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recyclerview_definition_item, parent, false);
         return new DefinitionHolder(inflatedView);
     }
 
     @Override
-    public void onBindViewHolder(Adapter.DefinitionHolder holder, int position) {
+    public void onBindViewHolder(DefinitionAdapter.DefinitionHolder holder, int position) {
         Definition definition = definitions.get(position);
         holder.bindDefinition(definition);
     }

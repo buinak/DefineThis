@@ -9,7 +9,7 @@ import com.orm.SugarRecord;
  * Created by Konstantin "Foreseer" Buinak on 22.06.2017.
  */
 
-public class Word extends SugarRecord<Word> implements Parcelable {
+public class Word extends SugarRecord implements Parcelable {
     String word;
     String jsonDefinitions;
 
