@@ -33,10 +33,20 @@ public class WordGroupHolder extends GroupViewHolder {
     @BindView(R.id.textView_date)
     TextView textViewDate;
 
+    private boolean isSetUp = false;
+
     public WordGroupHolder(View itemView) {
         super(itemView);
 
         ButterKnife.bind(this, itemView);
+    }
+
+    public boolean isSetUp() {
+        return isSetUp;
+    }
+
+    public void setSetUp(boolean setUp) {
+        isSetUp = setUp;
     }
 
     public void setWord(ExpandableWord word) {
@@ -48,6 +58,10 @@ public class WordGroupHolder extends GroupViewHolder {
 
         String newDate = formatDate(word.getWord().getDate());
         textViewDate.setText(newDate.toString());
+    }
+
+    public String getWord() {
+        return textViewWord.getText().toString();
     }
 
     private String formatDate(Date date) {

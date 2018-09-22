@@ -14,4 +14,10 @@
     <string name="menu_history_button">History</string>
     <string name="date_string_placeholder">22.09.18</string>
     <string name="word_string_placeholder">Word</string>
+    <string name="menu_sort">Sort</string>
+    <string name="menu_reset">Reset</string>
+    <string-array name="sort_array">
+        <item>Sort by newest</item>
+        <item>Sort alphabetically</item>
+    </string-array>
 </resources>

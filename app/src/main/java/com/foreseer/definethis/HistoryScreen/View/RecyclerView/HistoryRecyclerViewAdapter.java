@@ -9,6 +9,7 @@ import com.foreseer.definethis.R;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,8 +18,17 @@ import java.util.List;
 
 public class HistoryRecyclerViewAdapter extends ExpandableRecyclerViewAdapter<WordGroupHolder, DefinitionGroupHolder> {
 
+    private List<String> words;
+
+    boolean isBackgroundDone = false;
+    int i = 0;
+
     public HistoryRecyclerViewAdapter(List<ExpandableWord> groups) {
         super(groups);
+        words = new ArrayList<>(groups.size());
+        for (int i = 0; i < groups.size(); i++) {
+            words.add(groups.get(i).getTitle());
+        }
     }
 
     @Override
@@ -43,10 +53,18 @@ public class HistoryRecyclerViewAdapter extends ExpandableRecyclerViewAdapter<Wo
 
     @Override
     public void onBindGroupViewHolder(WordGroupHolder holder, int flatPosition, ExpandableGroup group) {
-        if (flatPosition % 2 == 0) {
-            holder.layout.setBackgroundColor(0xF5E0EEEE);
-        }
         ExpandableWord word = (ExpandableWord) group;
         holder.setWord(word);
+        //making sure there's no magic and we're checking for indeed the word we want
+        //that's because sometimes, for god knows what reason, the word in the group and the word
+        //in the holder would be different. Why?
+        String holderWord = holder.getWord().split(" ")[1];
+        if (words.indexOf(holderWord) % 2 == 0) {
+            holder.layout.setBackgroundColor(0xF5E0EEEE);
+        } else {
+            holder.layout.setBackgroundColor(0xFFFFFFFF);
+        }
+
+
     }
 }

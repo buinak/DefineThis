@@ -39,4 +39,9 @@ public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor
         view.displayWords(new ArrayList<>());
         interactor.resetHistory();
     }
+
+    @Override
+    public void onSortClicked() {
+
+    }
 }

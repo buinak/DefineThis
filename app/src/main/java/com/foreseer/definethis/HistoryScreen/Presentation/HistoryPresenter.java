@@ -7,4 +7,6 @@ package com.foreseer.definethis.HistoryScreen.Presentation;
 public interface HistoryPresenter {
     void onResetClicked();
     void onResetConfirmed();
+
+    void onSortClicked();
 }
