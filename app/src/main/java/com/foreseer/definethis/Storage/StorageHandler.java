@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class StorageHandler {
         }
         try {
             String jsonDefinitions = convertDefinitionsToJSON(definitions);
-            Word dbWord = new Word(word, jsonDefinitions);
+            Word dbWord = new Word(word, jsonDefinitions, new Date());
             dbWord.save();
         } catch (Exception e){
             Log.d("EXCEPTION STORAGE", e.getMessage());

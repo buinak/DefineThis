@@ -12,7 +12,17 @@ import java.util.List;
 
 public class ExpandableWord extends ExpandableGroup<Definition> {
 
-    public ExpandableWord(String title, List<Definition> items) {
-        super(title, items);
+    private Word word;
+    private List<Definition> definitions;
+
+    public ExpandableWord(Word word, List<Definition> definitions) {
+        super(word.getWord(), definitions);
+
+        this.word = word;
+        this.definitions = definitions;
+    }
+
+    public Word getWord() {
+        return word;
     }
 }

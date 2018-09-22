@@ -9,6 +9,9 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="history_activity_description">Previously requested words:</string>
+    <string name="history_activity_description">Previously requested words will show up here.</string>
+    <string name="history_activity_hint">Tap on a word to expand it.</string>
     <string name="menu_history_button">History</string>
+    <string name="date_string_placeholder">22.09.18</string>
+    <string name="word_string_placeholder">Word</string>
 </resources>

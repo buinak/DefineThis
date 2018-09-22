@@ -11,4 +11,5 @@ import java.util.List;
 
 public interface HistoryView {
     void displayWords(List<ExpandableWord> wordList);
+    void displayPromptDialog();
 }

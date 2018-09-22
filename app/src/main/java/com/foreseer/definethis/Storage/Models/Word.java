@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.orm.SugarRecord;
 
+import java.util.Date;
+
 /**
  * Created by Konstantin "Foreseer" Buinak on 22.06.2017.
  */
@@ -12,12 +14,14 @@ import com.orm.SugarRecord;
 public class Word extends SugarRecord implements Parcelable {
     String word;
     String jsonDefinitions;
+    Date date;
 
     public Word(){}
 
-    public Word(String word, String jsonDefinitions) {
+    public Word(String word, String jsonDefinitions, Date date) {
         this.word = word;
         this.jsonDefinitions = jsonDefinitions;
+        this.date = date;
     }
 
     public String getWord() {
@@ -36,9 +40,19 @@ public class Word extends SugarRecord implements Parcelable {
         this.jsonDefinitions = jsonDefinitions;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     protected Word(Parcel in) {
         word = in.readString();
         jsonDefinitions = in.readString();
+        date = new Date(Date.parse(in.readString()));
+
     }
 
     @Override
@@ -50,6 +64,7 @@ public class Word extends SugarRecord implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(word);
         dest.writeString(jsonDefinitions);
+        dest.writeString(date.toString());
     }
 
     @SuppressWarnings("unused")

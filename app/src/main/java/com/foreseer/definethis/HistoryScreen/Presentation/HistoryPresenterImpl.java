@@ -31,6 +31,11 @@ public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor
 
     @Override
     public void onResetClicked() {
+        view.displayPromptDialog();
+    }
+
+    @Override
+    public void onResetConfirmed() {
         view.displayWords(new ArrayList<>());
         interactor.resetHistory();
     }

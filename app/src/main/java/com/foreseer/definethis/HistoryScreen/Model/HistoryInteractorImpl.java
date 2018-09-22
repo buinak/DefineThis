@@ -43,9 +43,10 @@ public class HistoryInteractorImpl implements HistoryInteractor {
         List<ExpandableWord> list = new ArrayList<>();
         for (Word word : words){
             List<Definition> definitions = StorageHandler.convertJSONToDefinitions(word.getJsonDefinitions());
-            ExpandableWord expandableWord = new ExpandableWord(word.getWord(), definitions);
+            ExpandableWord expandableWord = new ExpandableWord(word, definitions);
             list.add(expandableWord);
         }
         listener.onDefinitionsReceived(list);
     }
+
 }

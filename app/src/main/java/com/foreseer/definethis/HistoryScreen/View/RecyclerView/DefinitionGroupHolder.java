@@ -26,6 +26,7 @@ public class DefinitionGroupHolder extends ChildViewHolder {
     @BindView(R.id.textView_definition_history)
     TextView textViewDefinition;
 
+
     @BindView(R.id.view_separator_history)
     View separator;
 

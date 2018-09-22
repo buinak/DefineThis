@@ -123,7 +123,9 @@ public class MainInteractorImpl implements MainInteractor {
                     }
                 }
                 processPartOfSpeech(definitionList);
+                definitionList = sortDefinitions(definitionList);
                 StorageHandler.save(headword, definitionList);
+
                 listener.onWordDefinitionsReceived(definitionList);
             }
         }
@@ -135,6 +137,27 @@ public class MainInteractorImpl implements MainInteractor {
         } else {
             return WordAPIClient.getApiClient().getWordDefinition(word, limit, WordAPIClient.API_KEY);
         }
+    }
+
+    private List<Definition> sortDefinitions(List<Definition> definitions){
+        List<Definition> newList = new ArrayList<>(definitions.size());
+        List<String> partsOfSpeech = new ArrayList<>();
+        //filling an array with parts of speech that the word is
+        for (int i = 0; i < definitions.size(); i++) {
+            if (!partsOfSpeech.contains(definitions.get(i).getPartOfSpeech())){
+                partsOfSpeech.add(definitions.get(i).getPartOfSpeech());
+            }
+        }
+        //doing as many iterations as there is parts of speech for the word
+        //adding definitions from every part iteratively
+        for (int i = 0; i < partsOfSpeech.size(); i++) {
+            for (int j = 0; j < definitions.size(); j++) {
+                if (definitions.get(j).getPartOfSpeech().equals(partsOfSpeech.get(i))){
+                    newList.add(definitions.get(j));
+                }
+            }
+        }
+        return newList;
     }
 
 

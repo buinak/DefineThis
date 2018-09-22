@@ -1,5 +1,7 @@
 package com.foreseer.definethis.HistoryScreen.View;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HistoryActivity extends AppCompatActivity implements HistoryView{
+public class HistoryActivity extends AppCompatActivity implements HistoryView {
 
     private HistoryPresenter presenter;
 
@@ -55,7 +57,19 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
         recyclerView.setAdapter(adapter);
     }
 
-    private void initializeToolbar(){
+    @Override
+    public void displayPromptDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("This will reset your search history. Do you wish to continue?");
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+
+        });
+        builder.setPositiveButton("Clear history", ((dialogInterface, i) -> presenter.onResetConfirmed()));
+        builder.show();
+    }
+
+
+    private void initializeToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -69,7 +83,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case (R.id.action_reset):
                 presenter.onResetClicked();
                 return true;

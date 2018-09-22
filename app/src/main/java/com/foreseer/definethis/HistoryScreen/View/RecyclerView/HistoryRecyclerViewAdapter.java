@@ -17,7 +17,7 @@ import java.util.List;
 
 public class HistoryRecyclerViewAdapter extends ExpandableRecyclerViewAdapter<WordGroupHolder, DefinitionGroupHolder> {
 
-    public HistoryRecyclerViewAdapter(List<? extends ExpandableGroup> groups) {
+    public HistoryRecyclerViewAdapter(List<ExpandableWord> groups) {
         super(groups);
     }
 
@@ -43,6 +43,10 @@ public class HistoryRecyclerViewAdapter extends ExpandableRecyclerViewAdapter<Wo
 
     @Override
     public void onBindGroupViewHolder(WordGroupHolder holder, int flatPosition, ExpandableGroup group) {
-        holder.setWord(group);
+        if (flatPosition % 2 == 0) {
+            holder.layout.setBackgroundColor(0xF5E0EEEE);
+        }
+        ExpandableWord word = (ExpandableWord) group;
+        holder.setWord(word);
     }
 }
