@@ -2,6 +2,7 @@ package com.foreseer.definethis.HistoryScreen.Presentation;
 
 import com.foreseer.definethis.HistoryScreen.Model.HistoryInteractor;
 import com.foreseer.definethis.HistoryScreen.Model.HistoryInteractorImpl;
+import com.foreseer.definethis.HistoryScreen.SortType;
 import com.foreseer.definethis.HistoryScreen.View.HistoryView;
 import com.foreseer.definethis.HistoryScreen.View.RecyclerView.ExpandableWord;
 import com.foreseer.definethis.Storage.Models.Word;
@@ -21,7 +22,7 @@ public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor
     public HistoryPresenterImpl(HistoryView view) {
         this.view = view;
         interactor = new HistoryInteractorImpl(this);
-        interactor.requestDefinitions();
+        interactor.requestDefinitions(null);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor
     }
 
     @Override
-    public void onSortClicked() {
-
+    public void onSortClicked(SortType sortType) {
+        interactor.requestDefinitions(sortType);
     }
 }

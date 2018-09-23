@@ -18,6 +18,7 @@ import android.widget.Spinner;
 
 import com.foreseer.definethis.HistoryScreen.Presentation.HistoryPresenter;
 import com.foreseer.definethis.HistoryScreen.Presentation.HistoryPresenterImpl;
+import com.foreseer.definethis.HistoryScreen.SortType;
 import com.foreseer.definethis.HistoryScreen.View.RecyclerView.ExpandableWord;
 import com.foreseer.definethis.HistoryScreen.View.RecyclerView.HistoryRecyclerViewAdapter;
 import com.foreseer.definethis.R;
@@ -94,9 +95,18 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView {
             case (R.id.action_reset):
                 presenter.onResetClicked();
                 return true;
-//            case (R.id.action_sort):
-//                presenter.onSortClicked();
-//                return true;
+            case (R.id.menuSortNewest):
+                presenter.onSortClicked(SortType.NEWEST);
+                return true;
+            case (R.id.menuSortOldest):
+                presenter.onSortClicked(SortType.OLDEST);
+                return true;
+            case (R.id.menuSortAtoZ):
+                presenter.onSortClicked(SortType.A_TO_Z);
+                return true;
+            case (R.id.menuSortZtoA):
+                presenter.onSortClicked(SortType.Z_TO_A);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
