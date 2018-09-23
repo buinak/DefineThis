@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.SearchView;
 import android.widget.Spinner;
 
 import com.foreseer.definethis.HistoryScreen.Presentation.HistoryPresenter;
@@ -39,6 +40,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView {
     @BindView(R.id.secondary_toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.search_view_history)
+    SearchView searchView;
+
     private LinearLayoutManager layoutManager;
     private HistoryRecyclerViewAdapter adapter;
 
@@ -50,9 +54,15 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView {
         ButterKnife.bind(this);
 
         initializeToolbar();
+        initializeSearchView();
 
         presenter = new HistoryPresenterImpl(this);
 
+    }
+
+    private void initializeSearchView() {
+        //makes the searchview clickable anywhere, not just on the search icon
+        searchView.setOnClickListener(v -> searchView.setIconified(false));
     }
 
 
