@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @BindView(R.id.tToolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.layout_main_query)
+    ConstraintLayout layoutQuery;
 
     /* RECYCLER VIEW */
 
@@ -107,8 +111,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
             }
         });
 
-        // what does this do?
-        //textViewDefinition.setMovementMethod(new ScrollingMovementMethod());
+        layoutQuery.setBackgroundColor(getResources().getColor(R.color.main_card_colour));
 
         presenter = new MainPresenterImpl(this);
     }

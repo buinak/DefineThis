@@ -14,10 +14,12 @@ import java.util.List;
 public interface HistoryInteractor {
 
     void requestDefinitions(SortType sortType);
+    void querySearch(String searchString);
 
     void resetHistory();
 
     public interface HistoryInteractorListener {
         void onDefinitionsReceived(List<ExpandableWord> words);
+        SortType returnDefaultSortType();
     }
 }

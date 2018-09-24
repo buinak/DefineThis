@@ -19,15 +19,23 @@ public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor
     private HistoryInteractor interactor;
     private HistoryView view;
 
+    public static final SortType DEFAULT_SORT = SortType.NEWEST;
+
     public HistoryPresenterImpl(HistoryView view) {
         this.view = view;
         interactor = new HistoryInteractorImpl(this);
-        interactor.requestDefinitions(null);
+        //request newest first by default
+        interactor.requestDefinitions(DEFAULT_SORT);
     }
 
     @Override
     public void onDefinitionsReceived(List<ExpandableWord> words) {
         view.displayWords(words);
+    }
+
+    @Override
+    public SortType returnDefaultSortType() {
+        return DEFAULT_SORT;
     }
 
     @Override
@@ -44,5 +52,10 @@ public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor
     @Override
     public void onSortClicked(SortType sortType) {
         interactor.requestDefinitions(sortType);
+    }
+
+    @Override
+    public void onSearchQueried(String query) {
+        interactor.querySearch(query);
     }
 }

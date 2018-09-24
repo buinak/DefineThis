@@ -11,4 +11,6 @@ public interface HistoryPresenter {
     void onResetConfirmed();
 
     void onSortClicked(SortType sortType);
+
+    void onSearchQueried(String query);
 }

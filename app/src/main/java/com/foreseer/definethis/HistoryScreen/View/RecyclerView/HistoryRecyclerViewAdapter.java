@@ -62,7 +62,7 @@ public class HistoryRecyclerViewAdapter extends ExpandableRecyclerViewAdapter<Wo
         if (words.indexOf(holderWord) % 2 == 0) {
             holder.layout.setBackgroundColor(0xF5E0EEEE);
         } else {
-            holder.layout.setBackgroundColor(0xFFFFFFFF);
+            holder.layout.setBackgroundColor(holder.layout.getResources().getColor(R.color.main_card_colour));
         }
 
 

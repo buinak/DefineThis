@@ -63,6 +63,20 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView {
     private void initializeSearchView() {
         //makes the searchview clickable anywhere, not just on the search icon
         searchView.setOnClickListener(v -> searchView.setIconified(false));
+        //on queries, send them to the presenter
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                presenter.onSearchQueried(s);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                presenter.onSearchQueried(s);
+                return true;
+            }
+        });
     }
 
 

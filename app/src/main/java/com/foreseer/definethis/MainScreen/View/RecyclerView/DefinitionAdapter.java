@@ -1,6 +1,7 @@
 package com.foreseer.definethis.MainScreen.View.RecyclerView;
 
 import android.animation.Animator;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.De
     public void onBindViewHolder(DefinitionAdapter.DefinitionHolder holder, int position) {
         Definition definition = definitions.get(position);
         holder.bindDefinition(definition);
+        holder.layout.setBackgroundColor(holder.layout.getResources().getColor(R.color.main_card_colour));
     }
 
     @Override
@@ -57,6 +59,9 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.De
 
         @BindView(R.id.textView_partOfSpeech)
         TextView textViewPartOfSpeech;
+
+        @BindView(R.id.layout_definition)
+        ConstraintLayout layout;
 
         public DefinitionHolder(View itemView) {
             super(itemView);

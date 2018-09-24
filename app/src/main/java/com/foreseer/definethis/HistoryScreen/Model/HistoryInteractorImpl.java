@@ -20,9 +20,13 @@ import io.reactivex.schedulers.Schedulers;
 public class HistoryInteractorImpl implements HistoryInteractor {
 
     private HistoryInteractorListener listener;
+    private List<ExpandableWord> lastRequested;
+
+    private SortType lastSorted;
 
     public HistoryInteractorImpl(HistoryInteractorListener listener) {
         this.listener = listener;
+        lastSorted = listener.returnDefaultSortType();
     }
 
     @Override
@@ -33,6 +37,38 @@ public class HistoryInteractorImpl implements HistoryInteractor {
                 .subscribe(words -> {
                     processWords(words, sortType);
                 });
+    }
+
+    @Override
+    public void querySearch(String searchString) {
+        if (searchString.equals("")) {
+            requestDefinitions(lastSorted);
+            return;
+        }
+
+        List<ExpandableWord> queryResults = new ArrayList<>();
+
+        //first run, include words that start with the search string
+        for (ExpandableWord word : lastRequested) {
+            if (word.getWord().getWord().startsWith(searchString)) {
+                //shouldn't add those already in the list
+                if (!queryResults.contains(word)) {
+                    queryResults.add(word);
+                }
+            }
+        }
+
+        //second run, include those that contain the search string
+        for (ExpandableWord word : lastRequested) {
+            if (word.getWord().getWord().contains(searchString)) {
+                //shouldn't add those already in the list
+                if (!queryResults.contains(word)) {
+                    queryResults.add(word);
+                }
+            }
+        }
+
+        listener.onDefinitionsReceived(queryResults);
     }
 
     @Override
@@ -47,11 +83,24 @@ public class HistoryInteractorImpl implements HistoryInteractor {
             ExpandableWord expandableWord = new ExpandableWord(word, definitions);
             list.add(expandableWord);
         }
+
+        //prepare for searching
+        //search is done and output in an alphabetical manner
+        lastRequested = new ArrayList<>(list.size());
+        lastRequested.addAll(list);
+        sortList(SortType.A_TO_Z, lastRequested);
+
+
+        lastSorted = sortType;
         if (sortType != null) {
             //very primitive sorting please replace later
-            sortList(sortType, list);
+            if (sortType == SortType.A_TO_Z) {
+                list = new ArrayList<>(lastRequested.size());
+                list.addAll(lastRequested);
+            } else {
+                sortList(sortType, list);
+            }
             // sorting ends here
-            System.out.println();
         }
 
         listener.onDefinitionsReceived(list);
