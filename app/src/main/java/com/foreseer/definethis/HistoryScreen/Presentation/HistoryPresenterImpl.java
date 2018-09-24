@@ -23,9 +23,10 @@ public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor
 
     public HistoryPresenterImpl(HistoryView view) {
         this.view = view;
-        interactor = new HistoryInteractorImpl(this);
-        //request newest first by default
-        interactor.requestDefinitions(DEFAULT_SORT);
+        SortType sortType = view.getLastSortedType();
+        interactor = new HistoryInteractorImpl(this, view.getLastSortedType());
+
+        interactor.requestDefinitions();
     }
 
     @Override
@@ -51,6 +52,7 @@ public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor
 
     @Override
     public void onSortClicked(SortType sortType) {
+        view.saveLastSortedType(sortType);
         interactor.requestDefinitions(sortType);
     }
 

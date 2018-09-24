@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
+import com.foreseer.definethis.Application;
 import com.foreseer.definethis.HistoryScreen.Presentation.HistoryPresenter;
 import com.foreseer.definethis.HistoryScreen.Presentation.HistoryPresenterImpl;
 import com.foreseer.definethis.HistoryScreen.SortType;
@@ -98,6 +99,24 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView {
         });
         builder.setPositiveButton("Clear history", ((dialogInterface, i) -> presenter.onResetConfirmed()));
         builder.show();
+    }
+
+    @Override
+    public void saveLastSortedType(SortType sortType) {
+        String lastSorted = sortType.toString();
+        getApplicationContext()
+                .getSharedPreferences(Application.SETTINGS_FILE_NAME, MODE_PRIVATE)
+                .edit()
+                .putString(Application.SETTING_LAST_SORTED, lastSorted)
+                .apply();
+        System.out.println();
+    }
+
+    @Override
+    public SortType getLastSortedType() {
+        return SortType.valueOf(getApplicationContext()
+                .getSharedPreferences(Application.SETTINGS_FILE_NAME, MODE_PRIVATE)
+                .getString(Application.SETTING_LAST_SORTED, null));
     }
 
 

@@ -12,6 +12,10 @@ import com.orm.SugarDb;
  */
 
 public class Application extends SugarApp{
+
+    public static final String SETTINGS_FILE_NAME = "definethispref";
+    public static final String SETTING_LAST_SORTED = "lastSorted";
+
     @Override
     public void onCreate() {
         super.onCreate();

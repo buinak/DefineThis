@@ -14,6 +14,7 @@ import java.util.List;
 public interface HistoryInteractor {
 
     void requestDefinitions(SortType sortType);
+    void requestDefinitions();
     void querySearch(String searchString);
 
     void resetHistory();

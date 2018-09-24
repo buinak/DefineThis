@@ -24,10 +24,12 @@ public class HistoryInteractorImpl implements HistoryInteractor {
 
     private SortType lastSorted;
 
-    public HistoryInteractorImpl(HistoryInteractorListener listener) {
+    public HistoryInteractorImpl(HistoryInteractorListener listener, SortType lastSorted) {
         this.listener = listener;
-        lastSorted = listener.returnDefaultSortType();
+        this.lastSorted = lastSorted;
     }
+
+
 
     @Override
     public void requestDefinitions(SortType sortType) {
@@ -37,6 +39,11 @@ public class HistoryInteractorImpl implements HistoryInteractor {
                 .subscribe(words -> {
                     processWords(words, sortType);
                 });
+    }
+
+    @Override
+    public void requestDefinitions() {
+        requestDefinitions(lastSorted);
     }
 
     @Override
