@@ -1,6 +1,7 @@
 package com.foreseer.definethis.MainScreen.View;
 
-import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Definition;
+
+import com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Definition;
 
 import java.util.List;
 

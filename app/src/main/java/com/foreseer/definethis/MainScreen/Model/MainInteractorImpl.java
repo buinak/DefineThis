@@ -1,10 +1,9 @@
 package com.foreseer.definethis.MainScreen.Model;
 
-import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Definition;
-import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Result;
-import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Word;
+import com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Word;
 import com.foreseer.definethis.MainScreen.Model.API.WordAPIClient;
 import com.foreseer.definethis.Storage.StorageHandler;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,7 @@ public class MainInteractorImpl implements MainInteractor {
 
         if (isCached(word)) {
             lastRequested = "";
-            listener.onWordDefinitionsReceived(StorageHandler.getDefinitions(word));
+            listener.onWordDefinitionsReceived(StorageHandler.getWord(word));
             return;
         }
 
@@ -67,7 +66,7 @@ public class MainInteractorImpl implements MainInteractor {
         }
         lastRequested = word;
 
-        requestDefinition(word, partOfSpeech, 1000)
+        WordAPIClient.getGoogleApiClient().getWordDefinition(word)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
@@ -105,59 +104,13 @@ public class MainInteractorImpl implements MainInteractor {
         }
     }
 
-    private void processResult(Word word) {
-        String headword = Utils.parseHeadwordOutOfURL(word.getUrl());
-        if (headword.equals(lastRequested) && !headword.equals("") && !lastRequested.equals("")) {
-            if (word.getResults().size() == 0) {
-                listener.onWordNotFound(lastRequested);
-            } else {
-                lastRequested = "";
-                String definition;
-                String partOfSpeech;
-                List<Definition> definitionList = new ArrayList<>();
-                for (Result result : word.getResults()){
-                    if (result.getSenses().get(0).getDefinition() != null){
-                        definitionList.add(new Definition(result.getSenses().get(0).getDefinition(), result.getPartOfSpeech()));
-                    } else {
-                        definitionList.add(new Definition(result.getSenses().get(0).getSubsenses().get(0).getDefinition(), result.getPartOfSpeech()));
-                    }
-                }
-                processPartOfSpeech(definitionList);
-                definitionList = sortDefinitions(definitionList);
-                StorageHandler.save(headword, definitionList);
-
-                listener.onWordDefinitionsReceived(definitionList);
-            }
-        }
+    private void processResult(com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Word word){
+        StorageHandler.save(word);
+        listener.onWordDefinitionsReceived(word);
     }
 
     private Observable<Word> requestDefinition(String word, String partOfSpeech, int limit){
-        if (!partOfSpeech.equals("")) {
-            return WordAPIClient.getApiClient().getWordDefinition(word, limit, partOfSpeech, WordAPIClient.API_KEY);
-        } else {
-            return WordAPIClient.getApiClient().getWordDefinition(word, limit, WordAPIClient.API_KEY);
-        }
-    }
-
-    private List<Definition> sortDefinitions(List<Definition> definitions){
-        List<Definition> newList = new ArrayList<>(definitions.size());
-        List<String> partsOfSpeech = new ArrayList<>();
-        //filling an array with parts of speech that the word is
-        for (int i = 0; i < definitions.size(); i++) {
-            if (!partsOfSpeech.contains(definitions.get(i).getPartOfSpeech())){
-                partsOfSpeech.add(definitions.get(i).getPartOfSpeech());
-            }
-        }
-        //doing as many iterations as there is parts of speech for the word
-        //adding definitions from every part iteratively
-        for (int i = 0; i < partsOfSpeech.size(); i++) {
-            for (int j = 0; j < definitions.size(); j++) {
-                if (definitions.get(j).getPartOfSpeech().equals(partsOfSpeech.get(i))){
-                    newList.add(definitions.get(j));
-                }
-            }
-        }
-        return newList;
+            return WordAPIClient.getGoogleApiClient().getWordDefinition(word);
     }
 
 
@@ -167,29 +120,6 @@ public class MainInteractorImpl implements MainInteractor {
             subject.onNext(text);
         } else {
             subject.onNext(text);
-        }
-    }
-
-    /**
-     * This method processes list of definitions and fixes part of speech parts in definitions.
-     * Since the API returns null for those definitions where part of speech is not certain (abbreviations,
-     * phrases), we can guess part of speech based on contents of the definition.
-     *
-     * For example if definition contains "abbreviation" we can guess it's an abbreviation et cetera
-     *
-     * @param definitions List of definitions
-     */
-    private void processPartOfSpeech(List<Definition> definitions){
-        for (Definition definition : definitions){
-            if (definition.getPartOfSpeech() == null){
-                if (definition.getDefinition().contains("abbreviation")){
-                    definition.setPartOfSpeech("abbreviation");
-                } else if (definition.getDefinition().contains("phrase")){
-                    definition.setPartOfSpeech("phrase");
-                } else {
-                    definition.setPartOfSpeech("unknown");
-                }
-            }
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.foreseer.definethis.MainScreen.Presentation;
 
-import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Definition;
 import com.foreseer.definethis.MainScreen.Model.MainInteractor;
 import com.foreseer.definethis.MainScreen.Model.MainInteractorImpl;
 import com.foreseer.definethis.MainScreen.View.MainView;
@@ -53,14 +52,6 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
         return true;
     }
 
-    @Override
-    public void onWordDefinitionReceived(Definition definition) {
-        List<Definition> list = new ArrayList<>();
-        list.add(definition);
-
-        view.showDefinitions(list);
-        viewFinish();
-    }
 
     private void viewFinish(){
         view.makeProgressBarGreen();
@@ -68,8 +59,8 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
     }
 
     @Override
-    public void onWordDefinitionsReceived(List<Definition> definitions) {
-        view.showDefinitions(definitions);
+    public void onWordDefinitionsReceived(com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Word word) {
+        view.showDefinitions(word.getDefinitions());
         List<Word> words = StorageHandler.getAllWords();
         viewFinish();
     }

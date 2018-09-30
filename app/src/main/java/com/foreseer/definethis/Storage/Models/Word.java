@@ -12,15 +12,16 @@ import java.util.Date;
  */
 
 public class Word extends SugarRecord implements Parcelable {
+
     String word;
-    String jsonDefinitions;
+    String jsonWord;
     Date date;
 
     public Word(){}
 
-    public Word(String word, String jsonDefinitions, Date date) {
+    public Word(String word, String jsonWord, Date date) {
         this.word = word;
-        this.jsonDefinitions = jsonDefinitions;
+        this.jsonWord = jsonWord;
         this.date = date;
     }
 
@@ -32,14 +33,6 @@ public class Word extends SugarRecord implements Parcelable {
         this.word = word;
     }
 
-    public String getJsonDefinitions() {
-        return jsonDefinitions;
-    }
-
-    public void setJsonDefinitions(String jsonDefinitions) {
-        this.jsonDefinitions = jsonDefinitions;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -48,9 +41,17 @@ public class Word extends SugarRecord implements Parcelable {
         this.date = date;
     }
 
+    public String getJsonWord() {
+        return jsonWord;
+    }
+
+    public void setJsonWord(String jsonWord) {
+        this.jsonWord = jsonWord;
+    }
+
     protected Word(Parcel in) {
         word = in.readString();
-        jsonDefinitions = in.readString();
+        jsonWord = in.readString();
         date = new Date(Date.parse(in.readString()));
 
     }
@@ -63,7 +64,7 @@ public class Word extends SugarRecord implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(word);
-        dest.writeString(jsonDefinitions);
+        dest.writeString(jsonWord);
         dest.writeString(date.toString());
     }
 

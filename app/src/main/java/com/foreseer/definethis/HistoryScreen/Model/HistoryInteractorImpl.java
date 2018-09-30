@@ -2,9 +2,12 @@ package com.foreseer.definethis.HistoryScreen.Model;
 
 import com.foreseer.definethis.HistoryScreen.SortType;
 import com.foreseer.definethis.HistoryScreen.View.RecyclerView.ExpandableWord;
-import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Definition;
+import com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Definition;
 import com.foreseer.definethis.Storage.Models.Word;
 import com.foreseer.definethis.Storage.StorageHandler;
+
+import com.foreseer.definethis.MainScreen.Model.API.Google.WordDeserializer;
+import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +89,12 @@ public class HistoryInteractorImpl implements HistoryInteractor {
     private void processWords(List<Word> words, SortType sortType) {
         List<ExpandableWord> list = new ArrayList<>();
         for (Word word : words) {
-            List<Definition> definitions = StorageHandler.convertJSONToDefinitions(word.getJsonDefinitions());
-            ExpandableWord expandableWord = new ExpandableWord(word, definitions);
+            com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Word current =
+                    new WordDeserializer().deserialize(
+                            new JsonParser().parse(word.getJsonWord()).getAsJsonObject(),
+                            null,
+                            null);
+            ExpandableWord expandableWord = new ExpandableWord(word, current.getDefinitions());
             list.add(expandableWord);
         }
 

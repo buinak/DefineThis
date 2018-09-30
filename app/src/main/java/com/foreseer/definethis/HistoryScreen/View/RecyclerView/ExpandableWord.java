@@ -1,6 +1,6 @@
 package com.foreseer.definethis.HistoryScreen.View.RecyclerView;
 
-import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Definition;
+import com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Definition;
 import com.foreseer.definethis.Storage.Models.Word;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 

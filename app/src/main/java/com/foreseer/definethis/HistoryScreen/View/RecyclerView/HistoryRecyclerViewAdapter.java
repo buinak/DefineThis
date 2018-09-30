@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Definition;
+import com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Definition;
 import com.foreseer.definethis.R;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;

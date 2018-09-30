@@ -1,6 +1,6 @@
 package com.foreseer.definethis.MainScreen.Model;
 
-import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Definition;
+import com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Word;
 
 import java.util.List;
 
@@ -16,8 +16,7 @@ public interface MainInteractor {
     void onTextChanged(String text);
 
     interface MainInteractorListener {
-        void onWordDefinitionReceived(Definition definition);
-        void onWordDefinitionsReceived(List<Definition> definitions);
+        void onWordDefinitionsReceived(Word word);
 
         void onEmptyRequestReceived();
 

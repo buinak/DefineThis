@@ -24,12 +24,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.foreseer.definethis.HistoryScreen.View.HistoryActivity;
-import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Definition;
+import com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Definition;
 import com.foreseer.definethis.MainScreen.Presentation.MainPresenter;
 import com.foreseer.definethis.MainScreen.Presentation.MainPresenterImpl;
 import com.foreseer.definethis.MainScreen.View.RecyclerView.DefinitionAdapter;
 import com.foreseer.definethis.R;
-import com.foreseer.definethis.Storage.Models.Word;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -114,9 +114,15 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView {
 
     @Override
     public SortType getLastSortedType() {
-        return SortType.valueOf(getApplicationContext()
+        String s = getApplicationContext()
                 .getSharedPreferences(Application.SETTINGS_FILE_NAME, MODE_PRIVATE)
-                .getString(Application.SETTING_LAST_SORTED, null));
+                .getString(Application.SETTING_LAST_SORTED, null);
+
+        if (s != null){
+            return SortType.valueOf(s);
+        } else {
+            return SortType.NEWEST;
+        }
     }
 
 

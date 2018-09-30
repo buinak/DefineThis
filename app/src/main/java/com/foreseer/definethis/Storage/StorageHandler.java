@@ -2,8 +2,12 @@ package com.foreseer.definethis.Storage;
 
 import android.util.Log;
 
-import com.foreseer.definethis.MainScreen.Model.API.JSONSchema.Definition;
+import com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Definition;
+import com.foreseer.definethis.MainScreen.Model.API.Google.WordDeserializer;
 import com.foreseer.definethis.Storage.Models.Word;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,14 +23,13 @@ import java.util.List;
 
 public class StorageHandler {
 
-    public static void save(String word, List<Definition> definitions){
-        if (Word.find(Word.class, "word = ?", word).size() != 0){
+    public static void save(com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Word word){
+        if (Word.find(Word.class, "word = ?", word.getWord()).size() != 0){
             System.out.println();
             return;
         }
         try {
-            String jsonDefinitions = convertDefinitionsToJSON(definitions);
-            Word dbWord = new Word(word, jsonDefinitions, new Date());
+            Word dbWord = new Word(word.getWord(), word.getJsonString(), new Date());
             dbWord.save();
         } catch (Exception e){
             Log.d("EXCEPTION STORAGE", e.getMessage());
@@ -34,41 +37,8 @@ public class StorageHandler {
     }
 
     public static List<Word> getAllWords(){
+        List<Word> words = Word.listAll(Word.class);
         return Word.listAll(Word.class);
-    }
-
-    private static String convertDefinitionsToJSON(List<Definition> definitionList) throws JSONException {
-        JSONObject jsonDefinitions = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-        for (Definition definition : definitionList) {
-            JSONObject jsonDefinition = new JSONObject();
-            jsonDefinition.put("definition", definition.getDefinition());
-            if (definition.getPartOfSpeech() != null) {
-                jsonDefinition.put("partOfSpeech", definition.getPartOfSpeech());
-            } else {
-                jsonDefinition.put("partOfSpeech", "unknown");
-            }
-            jsonArray.put(jsonDefinition);
-        }
-        jsonDefinitions.put("definitions", jsonArray);
-        return jsonDefinitions.toString();
-    }
-
-    public static List<Definition> convertJSONToDefinitions(String jsonString){
-        List<Definition> definitions = new ArrayList<>();
-        try {
-            JSONObject jsonObject = new JSONObject(jsonString);
-            JSONArray array = jsonObject.getJSONArray("definitions");
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject definition = array.getJSONObject(i);
-                String definitionString = definition.getString("definition");
-                String partOfSpeechString = definition.getString("partOfSpeech");
-                definitions.add(new Definition(definitionString, partOfSpeechString));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return definitions;
     }
 
     public static boolean wasWordPreviouslyRequested(String word){
@@ -78,13 +48,16 @@ public class StorageHandler {
         return true;
     }
 
-    public static List<Definition> getDefinitions(String word){
+    public static com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Word getWord(String word){
         if (!wasWordPreviouslyRequested(word)){
             return null;
         }
 
         Word savedWord = Word.find(Word.class, "word = ?", word).get(0);
-        return convertJSONToDefinitions(savedWord.getJsonDefinitions());
+        JsonObject object = new JsonParser().parse(savedWord.getJsonWord()).getAsJsonObject();
+        com.foreseer.definethis.MainScreen.Model.API.Google.JSONSchemaGoogle.Word result =
+                new WordDeserializer().deserialize(object, null, null);
+        return result;
     }
 
     public static void resetAllHistory(){
