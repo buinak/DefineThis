@@ -16,8 +16,8 @@
     <string name="word_string_placeholder">Word</string>
     <string name="menu_sort">Sort</string>
     <string name="menu_reset">Reset</string>
-    <string name="sort_oldest">Oldest</string>
-    <string name="sort_newest">Newest</string>
+    <string name="sort_oldest">Oldest first</string>
+    <string name="sort_newest">Newest first</string>
     <string name="a_to_z">A to Z</string>
     <string name="z_to_a">Z to A</string>
     <string-array name="sort_array">
