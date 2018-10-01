@@ -1,10 +1,10 @@
 package com.foreseer.definethis.UI.HistoryScreen.Presentation;
 
+import com.foreseer.definethis.Data.Models.Word;
 import com.foreseer.definethis.UI.HistoryScreen.Model.HistoryInteractor;
 import com.foreseer.definethis.UI.HistoryScreen.Model.HistoryInteractorImpl;
 import com.foreseer.definethis.UI.HistoryScreen.SortType;
 import com.foreseer.definethis.UI.HistoryScreen.View.HistoryView;
-import com.foreseer.definethis.UI.HistoryScreen.View.RecyclerView.ExpandableWord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor
     }
 
     @Override
-    public void onDefinitionsReceived(List<ExpandableWord> words) {
+    public void onDefinitionsReceived(List<Word> words) {
         view.displayWords(words);
     }
 

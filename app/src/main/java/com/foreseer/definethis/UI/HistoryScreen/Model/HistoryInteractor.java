@@ -1,7 +1,7 @@
 package com.foreseer.definethis.UI.HistoryScreen.Model;
 
+import com.foreseer.definethis.Data.Models.Word;
 import com.foreseer.definethis.UI.HistoryScreen.SortType;
-import com.foreseer.definethis.UI.HistoryScreen.View.RecyclerView.ExpandableWord;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public interface HistoryInteractor {
     void resetHistory();
 
     public interface HistoryInteractorListener {
-        void onDefinitionsReceived(List<ExpandableWord> words);
+        void onDefinitionsReceived(List<Word> words);
         SortType returnDefaultSortType();
     }
 }

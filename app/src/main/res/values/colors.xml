@@ -10,5 +10,5 @@
     <color name="main_definitions_container_card_color">#e0e0e0</color>
     <color name="main_definitions_card_color">#ffffff</color>
 
-    <color name="main_layout_color">#bdbdbd</color>
+    <color name="main_layout_color">#e0e0e0</color> <!-- #bdbdbd -->
 </resources>

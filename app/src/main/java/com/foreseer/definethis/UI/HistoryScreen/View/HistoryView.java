@@ -1,7 +1,7 @@
 package com.foreseer.definethis.UI.HistoryScreen.View;
 
+import com.foreseer.definethis.Data.Models.Word;
 import com.foreseer.definethis.UI.HistoryScreen.SortType;
-import com.foreseer.definethis.UI.HistoryScreen.View.RecyclerView.ExpandableWord;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 public interface HistoryView {
-    void displayWords(List<ExpandableWord> wordList);
+    void displayWords(List<Word> wordList);
     void displayPromptDialog();
 
     void saveLastSortedType(SortType sortType);

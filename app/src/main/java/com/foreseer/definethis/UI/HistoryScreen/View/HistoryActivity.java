@@ -11,13 +11,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
+import com.foreseer.definethis.Data.Models.Word;
 import com.foreseer.definethis.DefineThisApplication;
 import com.foreseer.definethis.UI.HistoryScreen.Presentation.HistoryPresenter;
 import com.foreseer.definethis.UI.HistoryScreen.Presentation.HistoryPresenterImpl;
 import com.foreseer.definethis.UI.HistoryScreen.SortType;
-import com.foreseer.definethis.UI.HistoryScreen.View.RecyclerView.ExpandableWord;
-import com.foreseer.definethis.UI.HistoryScreen.View.RecyclerView.HistoryRecyclerViewAdapter;
 import com.foreseer.definethis.R;
+import com.foreseer.definethis.UI.HistoryScreen.View.RecyclerView.HistoryRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -75,10 +75,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView {
 
 
     @Override
-    public void displayWords(List<ExpandableWord> wordList) {
+    public void displayWords(List<Word> wordList) {
         layoutManager = new LinearLayoutManager(this);
-
         adapter = new HistoryRecyclerViewAdapter(wordList);
+
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }

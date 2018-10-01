@@ -34,8 +34,12 @@ public class DefinitionHolder extends RecyclerView.ViewHolder{
 
         textViewDefinition.setText(definition.getDefinition());
 
-        String exampleString = "\"" + definition.getExample() + "\"";
-        textViewExamples.setText(exampleString);
+        if (definition.getExample() != null) {
+            String exampleString = "\"" + definition.getExample() + "\"";
+            textViewExamples.setText(exampleString);
+        } else {
+            textViewExamples.setVisibility(View.GONE);
+        }
 
         if (definition.getPartOfSpeech() != null) {
             textViewPartOfSpeech.setText(definition.getPartOfSpeech());
