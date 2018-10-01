@@ -34,14 +34,14 @@ public class HistoryRecyclerViewAdapter extends ExpandableRecyclerViewAdapter<Wo
     @Override
     public WordGroupHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recyclerview_history_item, parent, false);
+                .inflate(R.layout.recyclerview_history_word_item, parent, false);
         return new WordGroupHolder(view);
     }
 
     @Override
     public DefinitionGroupHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recyclerview_definition_history_item, parent, false);
+                .inflate(R.layout.recyclerview_main_screen_definition_item, parent, false);
         return new DefinitionGroupHolder(view);
     }
 

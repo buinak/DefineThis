@@ -23,14 +23,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".UI.HistoryScreen.View.HistoryActivity"
+        <activity
+            android:name=".UI.HistoryScreen.View.HistoryActivity"
             android:parentActivityName=".UI.MainScreen.View.MainActivity">
             <meta-data
                 android:name="com.foreseer.definethis.UI.MainScreen.View.MainActivity"
-                android:value="android.support.PARENT_ACTIVITY"
-                />
+                android:value="android.support.PARENT_ACTIVITY" />
         </activity>
+        <activity android:name=".UI.WordInformationScreen.WordInformationActivity"></activity>
     </application>
 
 </manifest>

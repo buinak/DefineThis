@@ -3,7 +3,7 @@ package com.foreseer.definethis.UI.HistoryScreen.Model;
 import com.foreseer.definethis.Data.Models.Word;
 import com.foreseer.definethis.UI.HistoryScreen.SortType;
 import com.foreseer.definethis.UI.HistoryScreen.View.RecyclerView.ExpandableWord;
-import com.foreseer.definethis.Data.StorageHandler;
+import com.foreseer.definethis.Data.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class HistoryInteractorImpl implements HistoryInteractor {
 
     @Override
     public void requestDefinitions(SortType sortType) {
-        Observable.just(StorageHandler.getAllWords())
+        Observable.just(Repository.getAllWords())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(words -> {
@@ -79,7 +79,7 @@ public class HistoryInteractorImpl implements HistoryInteractor {
 
     @Override
     public void resetHistory() {
-        StorageHandler.resetAllHistory();
+        Repository.resetAllHistory();
     }
 
     private void processWords(List<Word> words, SortType sortType) {

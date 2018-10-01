@@ -10,4 +10,6 @@ package com.foreseer.definethis.UI.MainScreen.Presentation;
 public interface MainPresenter {
     void onWordEntered(String word);
     void onEditTextChanged(String text);
+
+    void onDestroy();
 }

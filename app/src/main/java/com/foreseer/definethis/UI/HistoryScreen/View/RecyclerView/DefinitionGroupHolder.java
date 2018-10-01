@@ -16,15 +16,18 @@ import butterknife.ButterKnife;
 
 public class DefinitionGroupHolder extends ChildViewHolder {
 
-    @BindView(R.id.textView_partOfSpeech_history)
+    @BindView(R.id.textView_partOfSpeech)
     TextView textViewPartOfSpeech;
 
-    @BindView(R.id.textView_definition_history)
+    @BindView(R.id.textView_definition)
     TextView textViewDefinition;
 
+    @BindView(R.id.textView_examples)
+    TextView textViewExamples;
 
-    @BindView(R.id.view_separator_history)
-    View separator;
+//
+//    @BindView(R.id.view_separator_history)
+//    View separator;
 
     public DefinitionGroupHolder(View itemView) {
         super(itemView);
@@ -38,6 +41,9 @@ public class DefinitionGroupHolder extends ChildViewHolder {
 
         // old size : 22
         textViewDefinition.setText(definition.getDefinition());
+
+        String exampleString = "\"" + definition.getExample() + "\"";
+        textViewExamples.setText(exampleString);
 
     }
 }

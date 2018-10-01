@@ -36,6 +36,13 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
         }
     }
 
+    @Override
+    public void onDestroy() {
+        view = null;
+        model.onDestroy();
+        model = null;
+    }
+
     private boolean validateText(String text){
         /*if (text.equals("")){
             view.showError("Can't define nothing!");

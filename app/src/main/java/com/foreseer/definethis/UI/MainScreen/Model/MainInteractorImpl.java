@@ -2,12 +2,12 @@ package com.foreseer.definethis.UI.MainScreen.Model;
 
 import com.foreseer.definethis.Data.Models.Word;
 import com.foreseer.definethis.UI.MainScreen.Model.API.WordAPIClient;
-import com.foreseer.definethis.Data.StorageHandler;
+import com.foreseer.definethis.Data.Repository;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
@@ -15,7 +15,7 @@ import io.reactivex.subjects.PublishSubject;
  * Created by Konstantin "Foreseer" Buinak on 21.05.2017.
  * For any questions, feel free to reach me using any of my contacts.
  * Contacts:
- *  e-mail (preferred): fforeseer@gmail.com
+ * e-mail (preferred): fforeseer@gmail.com
  */
 
 
@@ -25,13 +25,15 @@ public class MainInteractorImpl implements MainInteractor {
     private PublishSubject<String> subject;
     private String lastRequested;
 
+    private Disposable request;
+
     public MainInteractorImpl(MainInteractorListener listener) {
         this.listener = listener;
         lastRequested = "";
         initializePublishSubject();
     }
 
-    private void initializePublishSubject(){
+    private void initializePublishSubject() {
         subject = PublishSubject.create();
         subject.debounce(500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -44,6 +46,10 @@ public class MainInteractorImpl implements MainInteractor {
 
     @Override
     public void onWordDefinitionRequested(String word) {
+        if (request != null) {
+            request.dispose();
+            request = null;
+        }
         word = word.toLowerCase();
 
         if (!validateWord(word)) {
@@ -52,18 +58,13 @@ public class MainInteractorImpl implements MainInteractor {
 
         if (isCached(word)) {
             lastRequested = "";
-            listener.onWordDefinitionsReceived(StorageHandler.getWord(word));
+            listener.onWordDefinitionsReceived(Repository.realmWordToModelWord(word));
             return;
         }
 
-        String partOfSpeech = "";
-        if (word.contains("to")){
-            partOfSpeech = "verb";
-            word = word.substring(word.indexOf(" ") + 1);
-        }
         lastRequested = word;
 
-        WordAPIClient.getGoogleApiClient().getWordDefinition(word)
+        request = WordAPIClient.getGoogleApiClient().getWordDefinition(word)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
@@ -74,19 +75,19 @@ public class MainInteractorImpl implements MainInteractor {
     }
 
     private boolean isCached(String word) {
-        if (StorageHandler.wasWordPreviouslyRequested(word)){
+        if (Repository.wasWordPreviouslyRequested(word)) {
             return true;
         }
         return false;
     }
 
     private boolean validateWord(String word) {
-        if (word.contains(" ")){
-            if (word.split(" ").length != 2){
+        if (word.contains(" ")) {
+            if (word.split(" ").length != 2) {
                 listener.onIncorrectWord();
                 return false;
             }
-            if (!word.startsWith("to ")){
+            if (!word.startsWith("to ")) {
                 listener.onIncorrectWord();
                 return false;
             }
@@ -101,13 +102,12 @@ public class MainInteractorImpl implements MainInteractor {
         }
     }
 
-    private void processResult(Word word){
-        StorageHandler.save(word);
-        listener.onWordDefinitionsReceived(word);
-    }
+    private void processResult(Word word) {
+        request.dispose();
+        request = null;
 
-    private Observable<Word> requestDefinition(String word, String partOfSpeech, int limit){
-            return WordAPIClient.getGoogleApiClient().getWordDefinition(word);
+        Repository.save(word);
+        listener.onWordDefinitionsReceived(word);
     }
 
 
@@ -117,6 +117,14 @@ public class MainInteractorImpl implements MainInteractor {
             subject.onNext(text);
         } else {
             subject.onNext(text);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (request != null) {
+            request.dispose();
+            request = null;
         }
     }
 }

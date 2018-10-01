@@ -13,6 +13,8 @@ public interface MainInteractor {
     void onWordDefinitionRequested(String word);
     void onTextChanged(String text);
 
+    void onDestroy();
+
     interface MainInteractorListener {
         void onWordDefinitionsReceived(Word word);
 

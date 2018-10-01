@@ -37,5 +37,13 @@
             android:text="cat is cat"
             android:textSize="18sp"
             android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textView_examples"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text='"examples"'
+            android:textStyle="italic" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

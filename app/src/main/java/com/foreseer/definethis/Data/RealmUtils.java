@@ -12,35 +12,14 @@ import com.foreseer.definethis.Data.Models.Word;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Realm;
 import io.realm.RealmList;
-import io.realm.RealmResults;
 
-/**
- * Created by Konstantin "Foreseer" Buinak on 22.06.2017.
- */
+public class RealmUtils {
 
-public class StorageHandler {
-
-    public static void save(Word word){
-        Realm realm = null;
-        try {
-            realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
-            RealmWord realmWord = getRealmWord(word);
-
-            realm.copyToRealm(realmWord);
-            realm.commitTransaction();
-        } finally {
-            if (realm != null) {
-                realm.close();
-            }
-        }
-
-    }
+    private RealmUtils () {}
 
     @NonNull
-    private static RealmWord getRealmWord(Word word) {
+    public static RealmWord modelWordToRealmWord(Word word) {
         RealmWord realmWord = new RealmWord();
         realmWord.setWord(word.getWord());
         realmWord.setDate(word.getDate());
@@ -74,7 +53,7 @@ public class StorageHandler {
     }
 
     @NonNull
-    private static Word getWord(RealmWord realmWord){
+    public static Word realmWordToModelWord(RealmWord realmWord){
         Word result = new Word();
         result.setWord(realmWord.getWord());
         result.setDate(realmWord.getDate());
@@ -103,48 +82,5 @@ public class StorageHandler {
         }
         result.setDefinitions(definitions);
         return result;
-    }
-
-    public static List<Word> getAllWords(){
-        Realm realm = null;
-        List<Word> result = new ArrayList<>();
-        try {
-            realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
-            RealmResults<RealmWord> results = realm.where(RealmWord.class).findAll();
-            for (RealmWord realmWord :
-                    results) {
-                result.add(getWord(realmWord));
-            }
-            realm.commitTransaction();
-        } finally {
-            if (realm != null) {
-                realm.close();
-            }
-        }
-        return result;
-    }
-
-    public static boolean wasWordPreviouslyRequested(String word){
-//        if (Word.find(Word.class, "word = ?", word).size() == 0){
-//            return false;
-//        }
-        return false;
-    }
-
-    public static Word getWord(String word){
-//        if (!wasWordPreviouslyRequested(word)){
-//            return null;
-//        }
-//
-//        Word savedWord = Word.find(Word.class, "word = ?", word).get(0);
-//        JsonObject object = new JsonParser().parse(savedWord.getJsonWord()).getAsJsonObject();
-//        Word result =
-//                new WordDeserializer().deserialize(object, null, null);
-        return null;
-    }
-
-    public static void resetAllHistory(){
-//        Word.deleteAll(Word.class);
     }
 }
