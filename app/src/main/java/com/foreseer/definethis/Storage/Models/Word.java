@@ -53,7 +53,6 @@ public class Word extends SugarRecord implements Parcelable {
         word = in.readString();
         jsonWord = in.readString();
         date = new Date(Date.parse(in.readString()));
-
     }
 
     @Override

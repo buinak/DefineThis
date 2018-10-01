@@ -48,9 +48,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.tToolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.layout_main_query)
-    ConstraintLayout layoutQuery;
-
     /* RECYCLER VIEW */
 
     @BindView(R.id.recyclerView_definitions)
@@ -109,8 +106,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 hideSoftKeyboardAndDefocus(v);
             }
         });
-
-        layoutQuery.setBackgroundColor(getResources().getColor(R.color.main_card_colour));
 
         presenter = new MainPresenterImpl(this);
     }

@@ -3,8 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="gray">#e0e0e0</color>
     <color name="white">#FFFFFFFF</color>
 
     <color name="main_card_colour">#FFFFFFFF</color>
+
+    <color name="main_definitions_container_card_color">#e0e0e0</color>
+    <color name="main_definitions_card_color">#ffffff</color>
+
+    <color name="main_layout_color">#bdbdbd</color>
 </resources>
