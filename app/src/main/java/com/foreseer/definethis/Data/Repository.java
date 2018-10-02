@@ -22,19 +22,19 @@ import io.realm.RealmResults;
 
 public class Repository {
 
-    public static void save(Word word){
-        if (wasWordPreviouslyRequested(word.getWord())){
+    public static void save(Word word) {
+        if (wasWordPreviouslyRequested(word.getWord())) {
             return;
         }
-        try (Realm realm = Realm.getDefaultInstance()){
+        try (Realm realm = Realm.getDefaultInstance()) {
             realm.executeTransaction(r -> {
                 RealmWord realmWord = RealmUtils.modelWordToRealmWord(word);
                 realm.copyToRealm(realmWord);
             });
         }
-            }
+    }
 
-    public static List<Word> getAllWords(){
+    public static List<Word> getAllWords() {
         Realm realm = null;
         List<Word> result = new ArrayList<>();
         try {
@@ -54,17 +54,19 @@ public class Repository {
         return result;
     }
 
-    public static boolean wasWordPreviouslyRequested(String word){
+    public static boolean wasWordPreviouslyRequested(String word) {
         boolean result = false;
         Realm realm = null;
         try {
             realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
             RealmResults<RealmWord> words = realm.where(RealmWord.class)
                     .equalTo("word", word)
                     .findAll();
-            if (words.size() > 0){
+            if (words.size() > 0) {
                 result = true;
             }
+            realm.commitTransaction();
         } finally {
             if (realm != null) {
                 realm.close();
@@ -73,8 +75,8 @@ public class Repository {
         return result;
     }
 
-    public static Word realmWordToModelWord(String word){
-        if (!wasWordPreviouslyRequested(word)){
+    public static Word getWord(String word) {
+        if (!wasWordPreviouslyRequested(word)) {
             return null;
         }
 
@@ -95,8 +97,8 @@ public class Repository {
         return resultWord;
     }
 
-    public static void resetAllHistory(){
-        try (Realm realm = Realm.getDefaultInstance()){
+    public static void resetAllHistory() {
+        try (Realm realm = Realm.getDefaultInstance()) {
             realm.executeTransaction(r -> {
                 r.deleteAll();
             });

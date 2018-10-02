@@ -1,4 +1,4 @@
-package com.foreseer.definethis.UI.MainScreen.View;
+package com.foreseer.definethis.UI.MainScreen;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,22 +22,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.foreseer.definethis.Data.Models.Word;
-import com.foreseer.definethis.UI.HistoryScreen.View.HistoryActivity;
-import com.foreseer.definethis.UI.MainScreen.Presentation.MainPresenter;
-import com.foreseer.definethis.UI.MainScreen.Presentation.MainPresenterImpl;
+import com.foreseer.definethis.UI.HistoryScreen.HistoryActivity;
+import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionRecyclerViewContract;
 import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionAdapter;
 import com.foreseer.definethis.R;
-import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionPresenter;
-import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionPresenterImpl;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.RealmList;
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements MainScreenContract.MainView {
 
 
     @BindView(R.id.editText_word)
@@ -58,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private LinearLayoutManager layoutManager;
     private DefinitionAdapter recyclerAdapter;
 
-    private MainPresenter presenter;
+    private MainScreenContract.MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void setAdapter(DefinitionPresenter presenter) {
+    public void setAdapter(DefinitionRecyclerViewContract.DefinitionPresenter presenter) {
         recyclerAdapter = new DefinitionAdapter(presenter);
         recyclerView.setAdapter(recyclerAdapter);
     }

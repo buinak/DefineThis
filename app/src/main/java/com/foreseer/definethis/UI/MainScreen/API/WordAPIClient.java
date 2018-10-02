@@ -1,8 +1,8 @@
-package com.foreseer.definethis.UI.MainScreen.Model.API;
+package com.foreseer.definethis.UI.MainScreen.API;
 
 import com.foreseer.definethis.Data.Models.Word;
-import com.foreseer.definethis.UI.MainScreen.Model.API.Google.WordDeserializer;
-import com.foreseer.definethis.UI.MainScreen.Model.API.Google.WordsAPIServiceGoogle;
+import com.foreseer.definethis.UI.MainScreen.API.Google.WordDeserializer;
+import com.foreseer.definethis.UI.MainScreen.API.Google.WordsAPIServiceGoogle;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

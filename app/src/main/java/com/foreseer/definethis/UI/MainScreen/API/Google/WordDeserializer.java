@@ -1,4 +1,4 @@
-package com.foreseer.definethis.UI.MainScreen.Model.API.Google;
+package com.foreseer.definethis.UI.MainScreen.API.Google;
 
 import com.foreseer.definethis.Data.Models.Definition;
 import com.foreseer.definethis.Data.Models.Word;

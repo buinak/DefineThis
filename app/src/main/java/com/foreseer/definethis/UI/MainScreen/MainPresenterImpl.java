@@ -1,12 +1,8 @@
-package com.foreseer.definethis.UI.MainScreen.Presentation;
+package com.foreseer.definethis.UI.MainScreen;
 
 import com.foreseer.definethis.Data.Models.Word;
-import com.foreseer.definethis.UI.MainScreen.Model.MainInteractor;
-import com.foreseer.definethis.UI.MainScreen.Model.MainInteractorImpl;
-import com.foreseer.definethis.UI.MainScreen.View.MainView;
-import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionModel;
+import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionRecyclerViewContract;
 import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionModelImpl;
-import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionPresenter;
 import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionPresenterImpl;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,11 +13,11 @@ import java.util.ArrayList;
  * Created by Konstantin "Foreseer" Buinak on 21.05.2017.
  */
 
-public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInteractorListener{
-    private MainView view;
-    private MainInteractor model;
+public class MainPresenterImpl implements MainScreenContract.MainPresenter, MainScreenContract.MainInteractor.MainInteractorListener{
+    private MainScreenContract.MainView view;
+    private MainScreenContract.MainInteractor model;
 
-    public MainPresenterImpl(MainView view) {
+    public MainPresenterImpl(MainScreenContract.MainView view) {
         this.view = view;
         model = new MainInteractorImpl(this);
     }
@@ -43,8 +39,8 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
     }
 
     private void resetViewDefinitions(){
-        DefinitionModel model = new DefinitionModelImpl(new ArrayList<>());
-        DefinitionPresenter presenter = new DefinitionPresenterImpl(model);
+        DefinitionRecyclerViewContract.DefinitionModel model = new DefinitionModelImpl(new ArrayList<>());
+        DefinitionRecyclerViewContract.DefinitionPresenter presenter = new DefinitionPresenterImpl(model);
         view.setAdapter(presenter);
     }
 
@@ -75,8 +71,8 @@ public class MainPresenterImpl implements MainPresenter, MainInteractor.MainInte
 
     @Override
     public void onWordDefinitionsReceived(Word word) {
-        DefinitionModel model = new DefinitionModelImpl(word.getDefinitions());
-        DefinitionPresenter presenter = new DefinitionPresenterImpl(model);
+        DefinitionRecyclerViewContract.DefinitionModel model = new DefinitionModelImpl(word.getDefinitions());
+        DefinitionRecyclerViewContract.DefinitionPresenter presenter = new DefinitionPresenterImpl(model);
         view.setAdapter(presenter);
         viewFinish();
     }

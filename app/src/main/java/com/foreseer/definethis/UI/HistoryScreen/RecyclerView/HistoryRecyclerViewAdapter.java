@@ -1,4 +1,4 @@
-package com.foreseer.definethis.UI.HistoryScreen.View.RecyclerView;
+package com.foreseer.definethis.UI.HistoryScreen.RecyclerView;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +31,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<WordViewHol
 
     @Override
     public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
+        holder.setOnClickListener();
         holder.bindWord(wordList.get(position));
     }
 

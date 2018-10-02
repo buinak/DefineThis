@@ -1,4 +1,4 @@
-package com.foreseer.definethis.UI.HistoryScreen.View;
+package com.foreseer.definethis.UI.HistoryScreen;
 
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,21 +12,18 @@ import android.view.MenuItem;
 import android.widget.SearchView;
 
 import com.foreseer.definethis.Data.Models.Word;
-import com.foreseer.definethis.DefineThisApplication;
-import com.foreseer.definethis.UI.HistoryScreen.Presentation.HistoryPresenter;
-import com.foreseer.definethis.UI.HistoryScreen.Presentation.HistoryPresenterImpl;
-import com.foreseer.definethis.UI.HistoryScreen.SortType;
+import com.foreseer.definethis.Application.DefineThisApplication;
 import com.foreseer.definethis.R;
-import com.foreseer.definethis.UI.HistoryScreen.View.RecyclerView.HistoryRecyclerViewAdapter;
+import com.foreseer.definethis.UI.HistoryScreen.RecyclerView.HistoryRecyclerViewAdapter;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HistoryActivity extends AppCompatActivity implements HistoryView {
+public class HistoryActivity extends AppCompatActivity implements HistoryScreenContract.HistoryView {
 
-    private HistoryPresenter presenter;
+    private HistoryScreenContract.HistoryPresenter presenter;
 
     @BindView(R.id.recyclerview_history_screen)
     RecyclerView recyclerView;
@@ -95,7 +92,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView {
     }
 
     @Override
-    public void saveLastSortedType(SortType sortType) {
+    public void saveLastSortedType(HistoryScreenContract.SortType sortType) {
         String lastSorted = sortType.toString();
         getApplicationContext()
                 .getSharedPreferences(DefineThisApplication.SETTINGS_FILE_NAME, MODE_PRIVATE)
@@ -106,15 +103,15 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView {
     }
 
     @Override
-    public SortType getLastSortedType() {
+    public HistoryScreenContract.SortType getLastSortedType() {
         String s = getApplicationContext()
                 .getSharedPreferences(DefineThisApplication.SETTINGS_FILE_NAME, MODE_PRIVATE)
                 .getString(DefineThisApplication.SETTING_LAST_SORTED, null);
 
         if (s != null){
-            return SortType.valueOf(s);
+            return HistoryScreenContract.SortType.valueOf(s);
         } else {
-            return SortType.NEWEST;
+            return HistoryScreenContract.SortType.NEWEST;
         }
     }
 
@@ -138,16 +135,16 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView {
                 presenter.onResetClicked();
                 return true;
             case (R.id.menuSortNewest):
-                presenter.onSortClicked(SortType.NEWEST);
+                presenter.onSortClicked(HistoryScreenContract.SortType.NEWEST);
                 return true;
             case (R.id.menuSortOldest):
-                presenter.onSortClicked(SortType.OLDEST);
+                presenter.onSortClicked(HistoryScreenContract.SortType.OLDEST);
                 return true;
             case (R.id.menuSortAtoZ):
-                presenter.onSortClicked(SortType.A_TO_Z);
+                presenter.onSortClicked(HistoryScreenContract.SortType.A_TO_Z);
                 return true;
             case (R.id.menuSortZtoA):
-                presenter.onSortClicked(SortType.Z_TO_A);
+                presenter.onSortClicked(HistoryScreenContract.SortType.Z_TO_A);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

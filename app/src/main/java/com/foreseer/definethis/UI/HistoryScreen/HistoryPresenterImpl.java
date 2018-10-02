@@ -1,10 +1,6 @@
-package com.foreseer.definethis.UI.HistoryScreen.Presentation;
+package com.foreseer.definethis.UI.HistoryScreen;
 
 import com.foreseer.definethis.Data.Models.Word;
-import com.foreseer.definethis.UI.HistoryScreen.Model.HistoryInteractor;
-import com.foreseer.definethis.UI.HistoryScreen.Model.HistoryInteractorImpl;
-import com.foreseer.definethis.UI.HistoryScreen.SortType;
-import com.foreseer.definethis.UI.HistoryScreen.View.HistoryView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +9,16 @@ import java.util.List;
  * Created by Konstantin "Foreseer" Buinak on 22.06.2017.
  */
 
-public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor.HistoryInteractorListener {
+public class HistoryPresenterImpl implements HistoryScreenContract.HistoryPresenter, HistoryScreenContract.HistoryInteractor.HistoryInteractorListener {
 
-    private HistoryInteractor interactor;
-    private HistoryView view;
+    private HistoryScreenContract.HistoryInteractor interactor;
+    private HistoryScreenContract.HistoryView view;
 
-    public static final SortType DEFAULT_SORT = SortType.NEWEST;
+    public static final HistoryScreenContract.SortType DEFAULT_SORT = HistoryScreenContract.SortType.NEWEST;
 
-    public HistoryPresenterImpl(HistoryView view) {
+    public HistoryPresenterImpl(HistoryScreenContract.HistoryView view) {
         this.view = view;
-        SortType sortType = view.getLastSortedType();
+        HistoryScreenContract.SortType sortType = view.getLastSortedType();
         interactor = new HistoryInteractorImpl(this, view.getLastSortedType());
 
         interactor.requestDefinitions();
@@ -34,7 +30,7 @@ public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor
     }
 
     @Override
-    public SortType returnDefaultSortType() {
+    public HistoryScreenContract.SortType returnDefaultSortType() {
         return DEFAULT_SORT;
     }
 
@@ -50,7 +46,7 @@ public class HistoryPresenterImpl implements HistoryPresenter, HistoryInteractor
     }
 
     @Override
-    public void onSortClicked(SortType sortType) {
+    public void onSortClicked(HistoryScreenContract.SortType sortType) {
         view.saveLastSortedType(sortType);
         interactor.requestDefinitions(sortType);
     }

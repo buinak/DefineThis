@@ -1,7 +1,7 @@
-package com.foreseer.definethis.UI.MainScreen.Model;
+package com.foreseer.definethis.UI.MainScreen;
 
 import com.foreseer.definethis.Data.Models.Word;
-import com.foreseer.definethis.UI.MainScreen.Model.API.WordAPIClient;
+import com.foreseer.definethis.UI.MainScreen.API.WordAPIClient;
 import com.foreseer.definethis.Data.Repository;
 
 import java.util.concurrent.TimeUnit;
@@ -19,7 +19,7 @@ import io.reactivex.subjects.PublishSubject;
  */
 
 
-public class MainInteractorImpl implements MainInteractor {
+public class MainInteractorImpl implements MainScreenContract.MainInteractor {
     private MainInteractorListener listener;
 
     private PublishSubject<String> subject;
@@ -58,7 +58,7 @@ public class MainInteractorImpl implements MainInteractor {
 
         if (isCached(word)) {
             lastRequested = "";
-            listener.onWordDefinitionsReceived(Repository.realmWordToModelWord(word));
+            listener.onWordDefinitionsReceived(Repository.getWord(word));
             return;
         }
 
