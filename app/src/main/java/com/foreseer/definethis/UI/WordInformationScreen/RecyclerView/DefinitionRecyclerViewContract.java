@@ -1,4 +1,4 @@
-package com.foreseer.definethis.UI.MainScreen.RecyclerView;
+package com.foreseer.definethis.UI.WordInformationScreen.RecyclerView;
 
 import com.foreseer.definethis.Data.Models.Definition;
 

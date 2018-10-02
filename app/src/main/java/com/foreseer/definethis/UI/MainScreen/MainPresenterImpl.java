@@ -1,9 +1,9 @@
 package com.foreseer.definethis.UI.MainScreen;
 
 import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionModelImpl;
+import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionPresenterImpl;
 import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionRecyclerViewContract;
-import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionModelImpl;
-import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionPresenterImpl;
 
 import org.apache.commons.lang3.StringUtils;
 

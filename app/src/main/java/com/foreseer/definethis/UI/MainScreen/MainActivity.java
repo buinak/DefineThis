@@ -24,7 +24,7 @@ import android.widget.ProgressBar;
 
 import com.foreseer.definethis.UI.HistoryScreen.HistoryActivity;
 import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionRecyclerViewContract;
-import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionAdapter;
+import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionAdapter;
 import com.foreseer.definethis.R;
 
 import butterknife.BindView;
