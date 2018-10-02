@@ -5,11 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.foreseer.definethis.Data.Models.Definition;
 import com.foreseer.definethis.Data.Models.Word;
 import com.foreseer.definethis.R;
-
-import java.util.List;
 
 /**
  * Created by Konstantin "Foreseer" Buinak on 22.06.2017.
@@ -17,13 +14,10 @@ import java.util.List;
 
 public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionHolder> {
 
-    private Word word;
+    private DefinitionPresenter presenter;
 
-    private List<Definition> definitions;
-
-    public DefinitionAdapter(Word word) {
-        this.word = word;
-        definitions = word.getDefinitions();
+    public DefinitionAdapter(DefinitionPresenter presenter) {
+        this.presenter = presenter;
     }
 
     @Override
@@ -35,13 +29,12 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionHolder> {
 
     @Override
     public void onBindViewHolder(DefinitionHolder holder, int position) {
-        Definition definition = definitions.get(position);
-        holder.bindDefinition(definition);
+        presenter.onBindDefinitionHolder(holder, position);
     }
 
     @Override
     public int getItemCount() {
-        return definitions.size();
+        return presenter.getRowCount();
     }
 
 }

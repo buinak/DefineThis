@@ -10,9 +10,7 @@ import com.foreseer.definethis.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DefinitionHolder extends RecyclerView.ViewHolder{
-
-    private Definition definition;
+public class DefinitionHolder extends RecyclerView.ViewHolder implements DefinitionView{
 
     @BindView(R.id.textView_definition)
     TextView textViewDefinition;
@@ -28,21 +26,23 @@ public class DefinitionHolder extends RecyclerView.ViewHolder{
         ButterKnife.bind(this, itemView);
     }
 
-    public void bindDefinition(Definition definition){
-        this.definition = definition;
+    @Override
+    public void setDefinitionText(String text) {
+        textViewDefinition.setText(text);
+    }
 
+    @Override
+    public void setExamples(String text) {
+        textViewExamples.setText(text);
+    }
 
-        textViewDefinition.setText(definition.getDefinition());
+    @Override
+    public void setPartOfSpeech(String text) {
+        textViewPartOfSpeech.setText(text);
+    }
 
-        if (definition.getExample() != null) {
-            String exampleString = "\"" + definition.getExample() + "\"";
-            textViewExamples.setText(exampleString);
-        } else {
-            textViewExamples.setVisibility(View.GONE);
-        }
-
-        if (definition.getPartOfSpeech() != null) {
-            textViewPartOfSpeech.setText(definition.getPartOfSpeech());
-        }
+    @Override
+    public void hideExamples() {
+        textViewExamples.setVisibility(View.GONE);
     }
 }

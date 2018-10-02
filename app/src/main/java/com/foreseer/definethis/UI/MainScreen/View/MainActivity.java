@@ -28,6 +28,8 @@ import com.foreseer.definethis.UI.MainScreen.Presentation.MainPresenter;
 import com.foreseer.definethis.UI.MainScreen.Presentation.MainPresenterImpl;
 import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionAdapter;
 import com.foreseer.definethis.R;
+import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionPresenter;
+import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionPresenterImpl;
 
 import java.util.ArrayList;
 
@@ -144,14 +146,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void showWord(Word word) {
-        recyclerAdapter = new DefinitionAdapter(word);
-        recyclerView.setAdapter(recyclerAdapter);
-    }
-
-    @Override
-    public void resetDefinitions() {
-        recyclerAdapter = new DefinitionAdapter(new Word(null, null, new ArrayList<>(), null));
+    public void setAdapter(DefinitionPresenter presenter) {
+        recyclerAdapter = new DefinitionAdapter(presenter);
         recyclerView.setAdapter(recyclerAdapter);
     }
 

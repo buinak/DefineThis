@@ -2,6 +2,7 @@ package com.foreseer.definethis.UI.MainScreen.View;
 
 
 import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.UI.MainScreen.View.RecyclerView.DefinitionPresenter;
 
 /**
  * Created by Konstantin "Foreseer" Buinak on 21.05.2017.
@@ -9,8 +10,7 @@ import com.foreseer.definethis.Data.Models.Word;
 
 public interface MainView {
 
-    void showWord(Word word);
-    void resetDefinitions();
+    void setAdapter(DefinitionPresenter presenter);
 
     void showError(String error);
     void resetError();

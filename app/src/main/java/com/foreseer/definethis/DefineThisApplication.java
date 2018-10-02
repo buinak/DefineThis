@@ -3,11 +3,6 @@ package com.foreseer.definethis;
 import android.app.Application;
 import android.content.res.Configuration;
 
-import com.orm.SchemaGenerator;
-import com.orm.SugarApp;
-import com.orm.SugarContext;
-import com.orm.SugarDb;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -23,7 +18,6 @@ public class DefineThisApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        SugarContext.init(getApplicationContext());
 
         Realm.init(this);
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
