@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DefineThis.iml" filepath="$PROJECT_DIR$/DefineThis.iml" />
       <module fileurl="file://$USER_HOME$/StudioProjects/DefineThis/.idea/DefineThis.iml" filepath="$USER_HOME$/StudioProjects/DefineThis/.idea/DefineThis.iml" />
-      <module fileurl="file://$PROJECT_DIR$/DefineThis.iml" filepath="$PROJECT_DIR$/DefineThis.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

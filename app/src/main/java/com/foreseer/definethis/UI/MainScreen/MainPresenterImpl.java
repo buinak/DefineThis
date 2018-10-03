@@ -47,7 +47,7 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
     @Override
     public void onDestroy() {
         view = null;
-        model.onDestroy();
+        model.finish();
         model = null;
     }
 

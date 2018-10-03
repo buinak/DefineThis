@@ -55,4 +55,11 @@ public class HistoryPresenterImpl implements HistoryScreenContract.HistoryPresen
     public void onSearchQueried(String query) {
         interactor.querySearch(query);
     }
+
+    @Override
+    public void onDestroy() {
+        interactor.finish();
+        interactor = null;
+        view = null;
+    }
 }

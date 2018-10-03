@@ -22,7 +22,7 @@ public class WordInformationPresenterImpl implements WordInformationContract.Wor
     @Override
     public void onWordReceived(Word word) {
         view.setWordViewText(word.getWord());
-        view.setPhoneticsViewText(word.getPhonetics().get(0));
+        view.setPhoneticsViewText("/" + word.getPhonetics().get(0) + "/");
         view.setUpRecyclerView();
         view.setRecyclerViewAdapter(new DefinitionAdapter(
                 new DefinitionPresenterImpl(

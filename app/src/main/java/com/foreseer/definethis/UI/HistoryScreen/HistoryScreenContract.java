@@ -21,6 +21,8 @@ public interface HistoryScreenContract {
         void onSortClicked(SortType sortType);
 
         void onSearchQueried(String query);
+
+        void onDestroy();
     }
 
     interface HistoryInteractor {
@@ -30,6 +32,8 @@ public interface HistoryScreenContract {
         void querySearch(String searchString);
 
         void resetHistory();
+
+        void finish();
 
         interface HistoryInteractorListener {
             void onDefinitionsReceived(List<Word> words);

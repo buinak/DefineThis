@@ -23,19 +23,18 @@ public class MainInteractorImpl implements MainScreenContract.MainInteractor {
     private MainInteractorListener listener;
 
     private PublishSubject<String> subject;
-    private String lastRequested;
 
     private Disposable request;
+    private Disposable subjectDisposable;
 
     public MainInteractorImpl(MainInteractorListener listener) {
         this.listener = listener;
-        lastRequested = "";
         initializePublishSubject();
     }
 
     private void initializePublishSubject() {
         subject = PublishSubject.create();
-        subject.debounce(500, TimeUnit.MILLISECONDS)
+        subjectDisposable = subject.debounce(500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(s -> {
@@ -46,10 +45,8 @@ public class MainInteractorImpl implements MainScreenContract.MainInteractor {
 
     @Override
     public void onWordDefinitionRequested(String word) {
-        if (request != null) {
-            request.dispose();
-            request = null;
-        }
+        disposeRequest();
+
         word = word.toLowerCase();
 
         if (!validateWord(word)) {
@@ -57,12 +54,9 @@ public class MainInteractorImpl implements MainScreenContract.MainInteractor {
         }
 
         if (isCached(word)) {
-            lastRequested = "";
             listener.onWordDefinitionsReceived(Repository.getWord(word));
             return;
         }
-
-        lastRequested = word;
 
         request = WordAPIClient.getGoogleApiClient().getWordDefinition(word)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -72,6 +66,13 @@ public class MainInteractorImpl implements MainScreenContract.MainInteractor {
                 }, e -> {
                     listener.onError((Exception) e, false);
                 });
+    }
+
+    private void disposeRequest() {
+        if (request != null) {
+            request.dispose();
+            request = null;
+        }
     }
 
     private boolean isCached(String word) {
@@ -103,9 +104,6 @@ public class MainInteractorImpl implements MainScreenContract.MainInteractor {
     }
 
     private void processResult(Word word) {
-        request.dispose();
-        request = null;
-
         Repository.save(word);
         listener.onWordDefinitionsReceived(word);
     }
@@ -121,10 +119,15 @@ public class MainInteractorImpl implements MainScreenContract.MainInteractor {
     }
 
     @Override
-    public void onDestroy() {
-        if (request != null) {
-            request.dispose();
-            request = null;
+    public void finish() {
+        disposeRequest();
+        disposeSubject();
+    }
+
+    private void disposeSubject() {
+        if (subjectDisposable != null){
+            subjectDisposable.dispose();
+            subjectDisposable = null;
         }
     }
 }

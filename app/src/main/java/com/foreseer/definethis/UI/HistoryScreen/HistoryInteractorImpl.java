@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -21,21 +22,21 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
 
     private HistoryScreenContract.SortType lastSorted;
 
+    private Disposable request;
+
     public HistoryInteractorImpl(HistoryInteractorListener listener, HistoryScreenContract.SortType lastSorted) {
         this.listener = listener;
         this.lastSorted = lastSorted;
     }
 
 
-
     @Override
     public void requestDefinitions(HistoryScreenContract.SortType sortType) {
-        Observable.just(Repository.getAllWords())
+        request = Observable.just(Repository.getAllWords())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(words -> {
-                    processWords(words, sortType);
-                });
+                .map(words -> processWords(words, sortType))
+                .subscribe(words -> listener.onDefinitionsReceived(words));
     }
 
     @Override
@@ -80,7 +81,20 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
         Repository.resetAllHistory();
     }
 
-    private void processWords(List<Word> words, HistoryScreenContract.SortType sortType) {
+    @Override
+    public void finish() {
+        requestDispose();
+        listener = null;
+    }
+
+    private void requestDispose() {
+        if (request != null) {
+            request.dispose();
+            request = null;
+        }
+    }
+
+    private List<Word> processWords(List<Word> words, HistoryScreenContract.SortType sortType) {
         List<Word> list = new ArrayList<>();
         list.addAll(words);
 
@@ -103,7 +117,7 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
             // sorting ends here
         }
 
-        listener.onDefinitionsReceived(list);
+        return list;
     }
 
     private void sortList(HistoryScreenContract.SortType sortType, List<Word> list) {

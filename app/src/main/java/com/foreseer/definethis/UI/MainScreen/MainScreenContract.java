@@ -29,7 +29,7 @@ public interface MainScreenContract {
         void onWordDefinitionRequested(String word);
         void onTextChanged(String text);
 
-        void onDestroy();
+        void finish();
 
         interface MainInteractorListener {
             void onWordDefinitionsReceived(Word word);
