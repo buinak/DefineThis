@@ -99,7 +99,6 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScreenC
                 .edit()
                 .putString(DefineThisApplication.SETTING_LAST_SORTED, lastSorted)
                 .apply();
-        System.out.println();
     }
 
     @Override

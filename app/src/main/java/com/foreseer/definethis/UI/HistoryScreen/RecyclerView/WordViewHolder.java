@@ -1,5 +1,7 @@
 package com.foreseer.definethis.UI.HistoryScreen.RecyclerView;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -33,7 +35,8 @@ public class WordViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(view -> {
             Intent intent = new Intent(view.getContext(), WordInformationActivity.class);
             intent.putExtra(WordInformationActivity.WORD_DATA_TAG, textViewWord.getText());
-            view.getContext().startActivity(intent);
+            view.getContext().startActivity(intent,
+                    ActivityOptions.makeSceneTransitionAnimation((Activity) itemView.getContext()).toBundle());
         });
     }
 

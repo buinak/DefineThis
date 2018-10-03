@@ -25,12 +25,14 @@
         </activity>
         <activity
             android:name=".UI.HistoryScreen.HistoryActivity"
-            android:parentActivityName=".UI.MainScreen.MainActivity">
+            android:parentActivityName=".UI.MainScreen.MainActivity"
+            android:theme="@style/AppTheme.HistoryActivity">
             <meta-data
                 android:name="com.foreseer.definethis.UI.MainScreen.MainActivity"
                 android:value="android.support.PARENT_ACTIVITY" />
         </activity>
-        <activity android:name=".UI.WordInformationScreen.WordInformationActivity">
+        <activity android:name=".UI.WordInformationScreen.WordInformationActivity"
+                    android:theme="@style/AppTheme.InformationActivity">
             <meta-data
                 android:name=".UI.HistoryScreen.HistoryActivity"
                 android:value="android.support.PARENT_ACTIVITY" />
