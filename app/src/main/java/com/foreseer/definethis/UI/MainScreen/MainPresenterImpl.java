@@ -7,7 +7,6 @@ import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionRecyclerView
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 
 /**
  * Created by Konstantin "Foreseer" Buinak on 21.05.2017.
@@ -20,6 +19,8 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
     public MainPresenterImpl(MainScreenContract.MainView view) {
         this.view = view;
         model = new MainInteractorImpl(this);
+
+        //view.hideWordTextView();
     }
 
     @Override
@@ -32,16 +33,14 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
     @Override
     public void onEditTextChanged(String text) {
         view.makeProgressBarGrey();
-        resetViewDefinitions();
+        hideViewElements();
         if (validateText(text)){
             model.onTextChanged(text);
         }
     }
 
-    private void resetViewDefinitions(){
-        DefinitionRecyclerViewContract.DefinitionModel model = new DefinitionModelImpl(new ArrayList<>());
-        DefinitionRecyclerViewContract.DefinitionPresenter presenter = new DefinitionPresenterImpl(model);
-        view.setAdapter(presenter);
+    private void hideViewElements(){
+        view.hideWordLayout();
     }
 
     @Override
@@ -64,9 +63,11 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
     }
 
 
-    private void viewFinish(){
+    private void onViewRequestFinished(){
         view.makeProgressBarGreen();
         view.hideProgressBar();
+
+        view.showWordLayout();
     }
 
     @Override
@@ -74,7 +75,11 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
         DefinitionRecyclerViewContract.DefinitionModel model = new DefinitionModelImpl(word.getDefinitions());
         DefinitionRecyclerViewContract.DefinitionPresenter presenter = new DefinitionPresenterImpl(model);
         view.setAdapter(presenter);
-        viewFinish();
+
+        view.setWordTextView(word.getWord());
+        view.setPhoneticsTextView(word.getPhonetics().get(0));
+
+        onViewRequestFinished();
     }
 
     @Override
@@ -86,7 +91,7 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
     @Override
     public void onRequestStarted() {
         view.resetError();
-        resetViewDefinitions();
+        hideViewElements();
         view.showProgressBar();
     }
 

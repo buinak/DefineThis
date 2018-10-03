@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.foreseer.definethis.UI.HistoryScreen.HistoryActivity;
 import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionRecyclerViewContract;
@@ -42,9 +45,21 @@ public class MainActivity extends AppCompatActivity implements MainScreenContrac
     @BindView(R.id.tToolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.textView_word)
+    TextView textViewWord;
+
+    @BindView(R.id.textView_phonetics)
+    TextView textViewPhonetics;
+
+    @BindView(R.id.cardView_wordPhonetics)
+    CardView cardViewWordPhonetics;
+
+    @BindView(R.id.layout_information)
+    ConstraintLayout layoutInformation;
+
     /* RECYCLER VIEW */
 
-    @BindView(R.id.recyclerView_definitions)
+    @BindView(R.id.recyclerView_information)
     RecyclerView recyclerView;
 
     // RECYCLER VIEW RELATED STUFF
@@ -170,6 +185,41 @@ public class MainActivity extends AppCompatActivity implements MainScreenContrac
     public void makeProgressBarGrey() {
         progressBar.getIndeterminateDrawable().clearColorFilter();
         progressBar.getProgressDrawable().clearColorFilter();
+    }
+
+    @Override
+    public void setWordTextView(String text) {
+        textViewWord.setText(text);
+    }
+
+    @Override
+    public void setPhoneticsTextView(String text) {
+        textViewPhonetics.setText(text);
+    }
+
+    @Override
+    public void hideWordPhoneticsCard() {
+        cardViewWordPhonetics.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showWordPhoneticsCard() {
+        cardViewWordPhonetics.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideWordTextView() {
+        textViewWord.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideWordLayout() {
+        layoutInformation.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showWordLayout() {
+        layoutInformation.setVisibility(View.VISIBLE);
     }
 
     /*

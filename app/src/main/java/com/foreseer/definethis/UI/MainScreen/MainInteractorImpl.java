@@ -104,8 +104,17 @@ public class MainInteractorImpl implements MainScreenContract.MainInteractor {
     }
 
     private void processResult(Word word) {
+        fixPhoneticsString(word);
+
         Repository.save(word);
         listener.onWordDefinitionsReceived(word);
+    }
+
+    private void fixPhoneticsString(Word word) {
+        if (!word.getPhonetics().get(0).startsWith("/")){
+            String newPhonetics = "/" + word.getPhonetics().get(0) + "/";
+            word.getPhonetics().set(0, newPhonetics);
+        }
     }
 
 

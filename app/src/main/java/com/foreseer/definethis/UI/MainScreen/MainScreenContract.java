@@ -16,6 +16,17 @@ public interface MainScreenContract {
         void hideProgressBar();
         void makeProgressBarGreen();
         void makeProgressBarGrey();
+
+        void setWordTextView(String text);
+        void setPhoneticsTextView(String text);
+
+        void hideWordPhoneticsCard();
+        void showWordPhoneticsCard();
+
+        void hideWordTextView();
+
+        void hideWordLayout();
+        void showWordLayout();
     }
 
     interface MainPresenter {

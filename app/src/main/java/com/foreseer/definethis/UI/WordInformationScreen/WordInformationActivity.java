@@ -19,10 +19,10 @@ public class WordInformationActivity extends AppCompatActivity implements WordIn
     @BindView(R.id.recyclerView_information)
     RecyclerView recyclerView;
 
-    @BindView(R.id.textView_information_word)
+    @BindView(R.id.textView_word)
     TextView textViewWord;
 
-    @BindView(R.id.textView_information_phonetics)
+    @BindView(R.id.textView_phonetics)
     TextView textViewPhonetics;
 
     @BindView(R.id.toolbar)
