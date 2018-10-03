@@ -20,7 +20,7 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
         this.view = view;
         model = new MainInteractorImpl(this);
 
-        //view.hideWordTextView();
+        view.hideWordLayout();
     }
 
     @Override

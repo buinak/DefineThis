@@ -23,6 +23,7 @@ import io.realm.RealmResults;
 public class Repository {
 
     public static void save(Word word) {
+
         if (wasWordPreviouslyRequested(word.getWord())) {
             return;
         }
