@@ -155,6 +155,15 @@ public class Repository {
         }
     }
 
+    public static void removeDeletedRecord(long id){
+        try (Realm realm = getDeletedRecordsInstance()){
+            realm.executeTransaction(r -> {
+                RealmResults<RealmDeletedRecord> results = r.where(RealmDeletedRecord.class).equalTo("id", id).findAll();
+                results.deleteAllFromRealm();
+            });
+        }
+    }
+
     public static void deleteAllDeletedRecords(){
         try (Realm realm = getDeletedRecordsInstance()){
             realm.executeTransaction(r -> {

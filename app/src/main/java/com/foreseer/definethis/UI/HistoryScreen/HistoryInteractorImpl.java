@@ -98,6 +98,7 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
     public void requestUndo() {
         if (!deletedRecords.empty()){
             DeletedRecord record = deletedRecords.pop();
+            Repository.removeDeletedRecord(record.getId());
             for (Word word :
                     record.getWords()) {
                 lastRequested.add(word);
