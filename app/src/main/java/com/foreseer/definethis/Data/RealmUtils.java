@@ -93,7 +93,8 @@ public class RealmUtils {
                 record.getWords()) {
             words.add(realmWordToModelWord(word));
         }
-        return new DeletedRecord(words);
+        DeletedRecord result = new DeletedRecord(record.getId(), words);
+        return result;
     }
 
     @NonNull
@@ -103,7 +104,7 @@ public class RealmUtils {
                 record.getWords()) {
             realmList.add(modelWordToRealmWord(word));
         }
-        RealmDeletedRecord realmRecord = new RealmDeletedRecord(realmList);
+        RealmDeletedRecord realmRecord = new RealmDeletedRecord(record.getId(), realmList);
         return realmRecord;
     }
 }

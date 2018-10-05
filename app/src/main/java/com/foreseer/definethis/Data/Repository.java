@@ -29,15 +29,15 @@ import io.realm.RealmResults;
 
 public class Repository {
 
-    private RealmConfiguration wordConfiguration;
-    private RealmConfiguration deletedRecordsConfiguration;
+    private static RealmConfiguration wordConfiguration;
+    private static RealmConfiguration deletedRecordsConfiguration;
 
     public static void setWordConfiguration(RealmConfiguration wordConfiguration) {
-        wordConfiguration = wordConfiguration;
+        Repository.wordConfiguration = wordConfiguration;
     }
 
     public static void setDeletedRecordsConfiguration(RealmConfiguration deletedRecordsConfiguration) {
-        deletedRecordsConfiguration = deletedRecordsConfiguration;
+        Repository.deletedRecordsConfiguration = deletedRecordsConfiguration;
     }
 
     public static void saveWord(Word word) {
@@ -54,7 +54,7 @@ public class Repository {
     }
 
     public static void saveDeletedRecord(DeletedRecord deletedRecord){
-        try (Realm realm = Realm.getDefaultInstance()){
+        try (Realm realm = getDeletedRecordsInstance()){
             realm.executeTransaction(r -> {
                 RealmDeletedRecord record = RealmUtils.deletedRecordToRealmDeletedRecord(deletedRecord);
                 realm.copyToRealm(record);
@@ -66,7 +66,7 @@ public class Repository {
         Realm realm = null;
         List<Word> result = new ArrayList<>();
         try {
-            realm = Realm.getDefaultInstance();
+            realm = getWordInstance();
             realm.beginTransaction();
             RealmResults<RealmWord> results = realm.where(RealmWord.class).findAll();
             for (RealmWord realmWord :
@@ -85,7 +85,7 @@ public class Repository {
         Realm realm = null;
         List<DeletedRecord> result = new ArrayList<>();
         try {
-            realm = Realm.getDefaultInstance();
+            realm = getDeletedRecordsInstance();
             realm.beginTransaction();
             RealmResults<RealmDeletedRecord> results = realm.where(RealmDeletedRecord.class).findAll();
             for (RealmDeletedRecord realmDeletedRecord :
@@ -107,7 +107,7 @@ public class Repository {
         boolean result = false;
         Realm realm = null;
         try {
-            realm = Realm.getDefaultInstance();
+            realm = getWordInstance();
             realm.beginTransaction();
             RealmResults<RealmWord> words = realm.where(RealmWord.class)
                     .equalTo("word", word)
@@ -132,7 +132,7 @@ public class Repository {
         Realm realm = null;
         Word resultWord;
         try {
-            realm = Realm.getDefaultInstance();
+            realm = getWordInstance();
             realm.beginTransaction();
             RealmResults<RealmWord> results = realm.where(RealmWord.class)
                     .equalTo("word", word)
@@ -147,7 +147,7 @@ public class Repository {
     }
 
     public static void deleteAllWords() {
-        try (Realm realm = Realm.getDefaultInstance()) {
+        try (Realm realm = getWordInstance()) {
             realm.executeTransaction(r -> {
                 RealmResults<RealmWord> results = r.where(RealmWord.class).findAll();
                 results.deleteAllFromRealm();
@@ -156,7 +156,7 @@ public class Repository {
     }
 
     public static void deleteAllDeletedRecords(){
-        try (Realm realm = Realm.getDefaultInstance()){
+        try (Realm realm = getDeletedRecordsInstance()){
             realm.executeTransaction(r -> {
                 RealmResults<RealmDeletedRecord> results = r.where(RealmDeletedRecord.class).findAll();
                 results.deleteAllFromRealm();
@@ -164,11 +164,11 @@ public class Repository {
         }
     }
 
-    private Realm getWordInstance(){
+    private static Realm getWordInstance(){
         return Realm.getInstance(wordConfiguration);
     }
 
-    private Realm getDeletedRecordsInstance(){
+    private static Realm getDeletedRecordsInstance(){
         return Realm.getInstance(deletedRecordsConfiguration);
     }
 }

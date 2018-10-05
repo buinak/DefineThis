@@ -17,8 +17,8 @@ public class DefineThisApplication extends Application {
     public static final String SETTINGS_FILE_NAME = "definethispref";
     public static final String SETTING_LAST_SORTED = "lastSorted";
 
-    public static final String WORD_DATABASE = "definethis.word.realm";
-    public static final String DELETED_RECORDS_DATABASE = "definethis.deleted.realm";
+    public static final String WORD_DATABASE = "definethis_word.realm";
+    public static final String DELETED_RECORDS_DATABASE = "definethis_deleted.realm";
 
     @Override
     public void onCreate() {
@@ -36,7 +36,7 @@ public class DefineThisApplication extends Application {
                 .name(DELETED_RECORDS_DATABASE)
                 .schemaVersion(0)
                 .build();
-        Repository.setWordConfiguration(deletedRecordsRealmConfig);
+        Repository.setDeletedRecordsConfiguration(deletedRecordsRealmConfig);
     }
 
     @Override

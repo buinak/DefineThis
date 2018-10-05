@@ -7,6 +7,7 @@ import com.foreseer.definethis.Data.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.UUID;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -108,7 +109,7 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
 
     @Override
     public void resetHistory() {
-        DeletedRecord record = new DeletedRecord(lastRequested);
+        DeletedRecord record = new DeletedRecord(UUID.randomUUID().getMostSignificantBits(), lastRequested);
         deletedRecords.push(record);
         Repository.saveDeletedRecord(record);
 
