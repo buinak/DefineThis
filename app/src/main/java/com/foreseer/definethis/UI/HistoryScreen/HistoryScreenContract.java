@@ -19,6 +19,7 @@ public interface HistoryScreenContract {
         void onResetConfirmed();
 
         void onSortClicked(SortType sortType);
+        void onUndoClicked();
 
         void onSearchQueried(String query);
 
@@ -31,6 +32,7 @@ public interface HistoryScreenContract {
         void requestDefinitions();
         void querySearch(String searchString);
 
+        void requestUndo();
         void resetHistory();
 
         void finish();

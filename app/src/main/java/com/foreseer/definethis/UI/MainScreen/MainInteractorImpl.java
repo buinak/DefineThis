@@ -106,7 +106,7 @@ public class MainInteractorImpl implements MainScreenContract.MainInteractor {
     private void processResult(Word word) {
         fixPhoneticsString(word);
 
-        Repository.save(word);
+        Repository.saveWord(word);
         listener.onWordDefinitionsReceived(word);
     }
 

@@ -3,6 +3,8 @@ package com.foreseer.definethis.Application;
 import android.app.Application;
 import android.content.res.Configuration;
 
+import com.foreseer.definethis.Data.Repository;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -15,16 +17,26 @@ public class DefineThisApplication extends Application {
     public static final String SETTINGS_FILE_NAME = "definethispref";
     public static final String SETTING_LAST_SORTED = "lastSorted";
 
+    public static final String WORD_DATABASE = "definethis.word.realm";
+    public static final String DELETED_RECORDS_DATABASE = "definethis.deleted.realm";
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         Realm.init(this);
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder()
-                .name("definethis.realm")
+        RealmConfiguration wordRealmConfig = new RealmConfiguration.Builder()
+                .name(WORD_DATABASE)
                 .schemaVersion(0)
                 .build();
-        Realm.setDefaultConfiguration(realmConfig);
+        Realm.setDefaultConfiguration(wordRealmConfig);
+        Repository.setWordConfiguration(wordRealmConfig);
+
+        RealmConfiguration deletedRecordsRealmConfig = new RealmConfiguration.Builder()
+                .name(DELETED_RECORDS_DATABASE)
+                .schemaVersion(0)
+                .build();
+        Repository.setWordConfiguration(deletedRecordsRealmConfig);
     }
 
     @Override

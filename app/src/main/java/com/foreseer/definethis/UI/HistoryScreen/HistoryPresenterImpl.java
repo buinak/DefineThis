@@ -52,6 +52,11 @@ public class HistoryPresenterImpl implements HistoryScreenContract.HistoryPresen
     }
 
     @Override
+    public void onUndoClicked() {
+        interactor.requestUndo();
+    }
+
+    @Override
     public void onSearchQueried(String query) {
         interactor.querySearch(query);
     }

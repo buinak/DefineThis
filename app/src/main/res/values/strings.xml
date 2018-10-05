@@ -20,6 +20,7 @@
     <string name="sort_newest">Newest first</string>
     <string name="a_to_z">A to Z</string>
     <string name="z_to_a">Z to A</string>
+    <string name="undo">Undo</string>
     <string-array name="sort_array">
         <item>Sort by newest</item>
         <item>Sort alphabetically</item>

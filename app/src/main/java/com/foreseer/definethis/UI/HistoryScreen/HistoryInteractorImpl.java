@@ -1,10 +1,12 @@
 package com.foreseer.definethis.UI.HistoryScreen;
 
+import com.foreseer.definethis.Data.Models.DeletedRecord;
 import com.foreseer.definethis.Data.Models.Word;
 import com.foreseer.definethis.Data.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -22,17 +24,32 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
 
     private HistoryScreenContract.SortType lastSorted;
 
-    private Disposable request;
+    private Stack<DeletedRecord> deletedRecords;
+
+    private Disposable wordRequest;
+    private Disposable deletedRecordsRequest;
 
     public HistoryInteractorImpl(HistoryInteractorListener listener, HistoryScreenContract.SortType lastSorted) {
         this.listener = listener;
         this.lastSorted = lastSorted;
+
+        lastRequested = new ArrayList<>();
+        deletedRecords = new Stack<>();
+
+        requestDeletedRecords();
     }
 
 
+    private void requestDeletedRecords(){
+        deletedRecordsRequest = Observable.just(Repository.getAllDeletedRecords())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(result -> deletedRecords = result);
+    }
+
     @Override
     public void requestDefinitions(HistoryScreenContract.SortType sortType) {
-        request = Observable.just(Repository.getAllWords())
+        wordRequest = Observable.just(Repository.getAllWords())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .map(words -> processWords(words, sortType))
@@ -77,8 +94,26 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
     }
 
     @Override
+    public void requestUndo() {
+        if (!deletedRecords.empty()){
+            DeletedRecord record = deletedRecords.pop();
+            for (Word word :
+                    record.getWords()) {
+                lastRequested.add(word);
+                Repository.saveWord(word);
+            }
+            listener.onDefinitionsReceived(processWords(lastRequested, lastSorted));
+        }
+    }
+
+    @Override
     public void resetHistory() {
-        Repository.resetAllHistory();
+        DeletedRecord record = new DeletedRecord(lastRequested);
+        deletedRecords.push(record);
+        Repository.saveDeletedRecord(record);
+
+        lastRequested = new ArrayList<>();
+        Repository.deleteAllWords();
     }
 
     @Override
@@ -88,9 +123,13 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
     }
 
     private void requestDispose() {
-        if (request != null) {
-            request.dispose();
-            request = null;
+        if (wordRequest != null) {
+            wordRequest.dispose();
+            wordRequest = null;
+        }
+        if (deletedRecordsRequest != null){
+            deletedRecordsRequest.dispose();
+            deletedRecordsRequest = null;
         }
     }
 

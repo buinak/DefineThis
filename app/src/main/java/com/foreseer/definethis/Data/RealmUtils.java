@@ -3,7 +3,9 @@ package com.foreseer.definethis.Data;
 import android.support.annotation.NonNull;
 
 import com.foreseer.definethis.Data.Models.Definition;
+import com.foreseer.definethis.Data.Models.DeletedRecord;
 import com.foreseer.definethis.Data.Models.Realm.RealmDefinition;
+import com.foreseer.definethis.Data.Models.Realm.RealmDeletedRecord;
 import com.foreseer.definethis.Data.Models.Realm.RealmPhonetic;
 import com.foreseer.definethis.Data.Models.Realm.RealmSynonym;
 import com.foreseer.definethis.Data.Models.Realm.RealmWord;
@@ -82,5 +84,26 @@ public class RealmUtils {
         }
         result.setDefinitions(definitions);
         return result;
+    }
+
+    @NonNull
+    public static DeletedRecord realmDeletedRecordToRecord(RealmDeletedRecord record){
+        List<Word> words = new ArrayList<>(record.getWords().size());
+        for (RealmWord word :
+                record.getWords()) {
+            words.add(realmWordToModelWord(word));
+        }
+        return new DeletedRecord(words);
+    }
+
+    @NonNull
+    public static RealmDeletedRecord deletedRecordToRealmDeletedRecord(DeletedRecord record){
+        RealmList<RealmWord> realmList = new RealmList<>();
+        for (Word word :
+                record.getWords()) {
+            realmList.add(modelWordToRealmWord(word));
+        }
+        RealmDeletedRecord realmRecord = new RealmDeletedRecord(realmList);
+        return realmRecord;
     }
 }

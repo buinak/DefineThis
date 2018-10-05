@@ -123,7 +123,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScreenC
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.secondary_menu, menu);
+        inflater.inflate(R.menu.history_menu, menu);
         return true;
     }
 
@@ -144,6 +144,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScreenC
                 return true;
             case (R.id.menuSortZtoA):
                 presenter.onSortClicked(HistoryScreenContract.SortType.Z_TO_A);
+                return true;
+            case (R.id.action_undo):
+                presenter.onUndoClicked();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
