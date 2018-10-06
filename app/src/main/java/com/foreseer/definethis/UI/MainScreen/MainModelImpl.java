@@ -19,15 +19,15 @@ import io.reactivex.subjects.PublishSubject;
  */
 
 
-public class MainInteractorImpl implements MainScreenContract.MainInteractor {
-    private MainInteractorListener listener;
+public class MainModelImpl implements MainScreenContract.MainModel {
+    private MainModelListener listener;
 
     private PublishSubject<String> subject;
 
     private Disposable request;
     private Disposable subjectDisposable;
 
-    public MainInteractorImpl(MainInteractorListener listener) {
+    public MainModelImpl(MainModelListener listener) {
         this.listener = listener;
         initializePublishSubject();
     }

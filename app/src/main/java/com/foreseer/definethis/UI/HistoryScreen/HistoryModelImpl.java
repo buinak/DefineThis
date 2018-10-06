@@ -8,7 +8,6 @@ import com.foreseer.definethis.UI.HistoryScreen.RecyclerView.SwipeToDeleteCallba
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import java.util.UUID;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -19,10 +18,10 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Konstantin "Foreseer" Buinak on 22.06.2017.
  */
 
-public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInteractor,
+public class HistoryModelImpl implements HistoryScreenContract.HistoryModel,
         SwipeToDeleteCallback.SwipeToDeleteCallbackListener {
 
-    private HistoryInteractorListener listener;
+    private HistoryModelListener listener;
     private List<Word> lastRequested;
 
     private HistoryScreenContract.SortType lastSorted;
@@ -32,7 +31,7 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
     private Disposable wordRequest;
     private Disposable deletedRecordsRequest;
 
-    public HistoryInteractorImpl(HistoryInteractorListener listener, HistoryScreenContract.SortType lastSorted) {
+    public HistoryModelImpl(HistoryModelListener listener, HistoryScreenContract.SortType lastSorted) {
         this.listener = listener;
         this.lastSorted = lastSorted;
 

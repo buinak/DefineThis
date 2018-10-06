@@ -30,7 +30,7 @@ public interface HistoryScreenContract {
         void onDestroy();
     }
 
-    interface HistoryInteractor {
+    interface HistoryModel {
 
         void requestDefinitions(SortType sortType);
         void requestDefinitions();
@@ -43,7 +43,7 @@ public interface HistoryScreenContract {
 
         boolean hasWords();
 
-        interface HistoryInteractorListener {
+        interface HistoryModelListener {
             void onDefinitionsReceived(List<Word> words);
             void onWordAlreadyExists(String wordString);
             void onWordAlreadyExists();

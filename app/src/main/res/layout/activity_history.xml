@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_layout_color"
-    tools:context=".UI.HistoryScreen.HistoryActivity"
+    tools:context=".UI.HistoryScreen.HistoryViewImpl"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="25dp">
 

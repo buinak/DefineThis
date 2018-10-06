@@ -12,9 +12,9 @@ import java.util.List;
  * Created by Konstantin "Foreseer" Buinak on 22.06.2017.
  */
 
-public class HistoryPresenterImpl implements HistoryScreenContract.HistoryPresenter, HistoryScreenContract.HistoryInteractor.HistoryInteractorListener {
+public class HistoryPresenterImpl implements HistoryScreenContract.HistoryPresenter, HistoryScreenContract.HistoryModel.HistoryModelListener {
 
-    private HistoryScreenContract.HistoryInteractor interactor;
+    private HistoryScreenContract.HistoryModel model;
     private HistoryScreenContract.HistoryView view;
 
     public static final HistoryScreenContract.SortType DEFAULT_SORT = HistoryScreenContract.SortType.NEWEST;
@@ -22,10 +22,10 @@ public class HistoryPresenterImpl implements HistoryScreenContract.HistoryPresen
     public HistoryPresenterImpl(HistoryScreenContract.HistoryView view) {
         this.view = view;
         HistoryScreenContract.SortType sortType = view.getLastSortedType();
-        interactor = new HistoryInteractorImpl(this, view.getLastSortedType());
+        model = new HistoryModelImpl(this, view.getLastSortedType());
 
-        view.initializeRecyclerView(ItemTouchHelper.LEFT, (SwipeToDeleteCallback.SwipeToDeleteCallbackListener) interactor);
-        interactor.requestDefinitions();
+        view.initializeRecyclerView(ItemTouchHelper.LEFT, (SwipeToDeleteCallback.SwipeToDeleteCallbackListener) model);
+        model.requestDefinitions();
     }
 
     @Override
@@ -56,29 +56,29 @@ public class HistoryPresenterImpl implements HistoryScreenContract.HistoryPresen
     @Override
     public void onResetConfirmed() {
         view.displayWords(new ArrayList<>());
-        interactor.resetHistory();
+        model.resetHistory();
     }
 
     @Override
     public void onSortClicked(HistoryScreenContract.SortType sortType) {
         view.saveLastSortedType(sortType);
-        interactor.requestDefinitions(sortType);
+        model.requestDefinitions(sortType);
     }
 
     @Override
     public void onUndoClicked() {
-        interactor.requestUndo();
+        model.requestUndo();
     }
 
     @Override
     public void onSearchQueried(String query) {
-        interactor.querySearch(query);
+        model.querySearch(query);
     }
 
     @Override
     public void onDestroy() {
-        interactor.finish();
-        interactor = null;
+        model.finish();
+        model = null;
         view = null;
     }
 }

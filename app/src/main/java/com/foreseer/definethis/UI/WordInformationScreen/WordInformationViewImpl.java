@@ -14,7 +14,7 @@ import com.foreseer.definethis.UI.WordInformationScreen.RecyclerView.DefinitionA
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WordInformationActivity extends AppCompatActivity implements WordInformationContract.WordInformationView {
+public class WordInformationViewImpl extends AppCompatActivity implements WordInformationContract.WordInformationView {
 
     @BindView(R.id.recyclerView_information)
     RecyclerView recyclerView;

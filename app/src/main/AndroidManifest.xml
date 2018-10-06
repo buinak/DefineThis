@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".UI.MainScreen.MainActivity">
+        <activity android:name=".UI.MainScreen.MainViewImpl">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,14 +24,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UI.HistoryScreen.HistoryActivity"
-            android:parentActivityName=".UI.MainScreen.MainActivity"
+            android:name=".UI.HistoryScreen.HistoryViewImpl"
+            android:parentActivityName=".UI.MainScreen.MainViewImpl"
             android:theme="@style/AppTheme.HistoryActivity">
             <meta-data
-                android:name="com.foreseer.definethis.UI.MainScreen.MainActivity"
+                android:name="com.foreseer.definethis.UI.MainScreen.MainViewImpl"
                 android:value="android.support.PARENT_ACTIVITY" />
         </activity>
-        <activity android:name=".UI.WordInformationScreen.WordInformationActivity"
+        <activity android:name=".UI.WordInformationScreen.WordInformationViewImpl"
                     android:theme="@style/AppTheme.InformationActivity">
             <meta-data
                 android:name=".UI.HistoryScreen.HistoryActivity"

@@ -25,7 +25,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.foreseer.definethis.UI.HistoryScreen.HistoryActivity;
+import com.foreseer.definethis.UI.HistoryScreen.HistoryViewImpl;
 import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionRecyclerViewContract;
 import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionAdapter;
 import com.foreseer.definethis.R;
@@ -33,7 +33,7 @@ import com.foreseer.definethis.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements MainScreenContract.MainView {
+public class MainViewImpl extends AppCompatActivity implements MainScreenContract.MainView {
 
 
     @BindView(R.id.editText_word)
@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements MainScreenContrac
     }
 
     private void startHistoryActivity(){
-        Intent intent = new Intent(this, HistoryActivity.class);
+        Intent intent = new Intent(this, HistoryViewImpl.class);
         startActivity(intent);
     }
 }

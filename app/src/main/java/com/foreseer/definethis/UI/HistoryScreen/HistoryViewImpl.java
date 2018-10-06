@@ -24,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HistoryActivity extends AppCompatActivity implements HistoryScreenContract.HistoryView {
+public class HistoryViewImpl extends AppCompatActivity implements HistoryScreenContract.HistoryView {
 
     private HistoryScreenContract.HistoryPresenter presenter;
 

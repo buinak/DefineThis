@@ -36,13 +36,13 @@ public interface MainScreenContract {
         void onDestroy();
     }
 
-    interface MainInteractor {
+    interface MainModel {
         void onWordDefinitionRequested(String word);
         void onTextChanged(String text);
 
         void finish();
 
-        interface MainInteractorListener {
+        interface MainModelListener {
             void onWordDefinitionsReceived(Word word);
 
             void onEmptyRequestReceived();

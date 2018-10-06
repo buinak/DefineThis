@@ -12,13 +12,13 @@ import org.apache.commons.lang3.StringUtils;
  * Created by Konstantin "Foreseer" Buinak on 21.05.2017.
  */
 
-public class MainPresenterImpl implements MainScreenContract.MainPresenter, MainScreenContract.MainInteractor.MainInteractorListener{
+public class MainPresenterImpl implements MainScreenContract.MainPresenter, MainScreenContract.MainModel.MainModelListener {
     private MainScreenContract.MainView view;
-    private MainScreenContract.MainInteractor model;
+    private MainScreenContract.MainModel model;
 
     public MainPresenterImpl(MainScreenContract.MainView view) {
         this.view = view;
-        model = new MainInteractorImpl(this);
+        model = new MainModelImpl(this);
 
         view.hideWordLayout();
     }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.foreseer.definethis.Data.Models.Word;
 import com.foreseer.definethis.R;
-import com.foreseer.definethis.UI.WordInformationScreen.WordInformationActivity;
+import com.foreseer.definethis.UI.WordInformationScreen.WordInformationViewImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,8 +37,8 @@ public class WordViewHolder extends RecyclerView.ViewHolder {
 
     public void setOnClickListener(){
         itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), WordInformationActivity.class);
-            intent.putExtra(WordInformationActivity.WORD_DATA_TAG, textViewWord.getText());
+            Intent intent = new Intent(view.getContext(), WordInformationViewImpl.class);
+            intent.putExtra(WordInformationViewImpl.WORD_DATA_TAG, textViewWord.getText());
             view.getContext().startActivity(intent,
                     ActivityOptions.makeSceneTransitionAnimation((Activity) itemView.getContext()).toBundle());
         });
