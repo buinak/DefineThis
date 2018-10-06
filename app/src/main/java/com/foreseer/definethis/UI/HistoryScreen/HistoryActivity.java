@@ -6,15 +6,18 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.foreseer.definethis.Data.Models.Word;
 import com.foreseer.definethis.Application.DefineThisApplication;
 import com.foreseer.definethis.R;
 import com.foreseer.definethis.UI.HistoryScreen.RecyclerView.HistoryRecyclerViewAdapter;
+import com.foreseer.definethis.UI.HistoryScreen.RecyclerView.SwipeToDeleteCallback;
 
 import java.util.List;
 
@@ -83,12 +86,19 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScreenC
     @Override
     public void displayPromptDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("This will reset your search history. Do you wish to continue?");
+        builder.setMessage("This will reset the entire history. " +
+                "All the actions prior to the reset will be forgotten " +
+                "and you will not be able to undo them anymore. Do you wish to continue?");
         builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
 
         });
         builder.setPositiveButton("Clear history", ((dialogInterface, i) -> presenter.onResetConfirmed()));
         builder.show();
+    }
+
+    @Override
+    public void displayError(String errorMessage) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -118,6 +128,12 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScreenC
     private void initializeToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void initializeRecyclerView(int direction, SwipeToDeleteCallback.SwipeToDeleteCallbackListener listener) {
+        new ItemTouchHelper(new SwipeToDeleteCallback(0, direction, listener))
+                .attachToRecyclerView(recyclerView);
     }
 
     @Override

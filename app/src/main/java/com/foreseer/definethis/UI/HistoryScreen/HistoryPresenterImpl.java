@@ -1,6 +1,9 @@
 package com.foreseer.definethis.UI.HistoryScreen;
 
+import android.support.v7.widget.helper.ItemTouchHelper;
+
 import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.UI.HistoryScreen.RecyclerView.SwipeToDeleteCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +24,23 @@ public class HistoryPresenterImpl implements HistoryScreenContract.HistoryPresen
         HistoryScreenContract.SortType sortType = view.getLastSortedType();
         interactor = new HistoryInteractorImpl(this, view.getLastSortedType());
 
+        view.initializeRecyclerView(ItemTouchHelper.LEFT, (SwipeToDeleteCallback.SwipeToDeleteCallbackListener) interactor);
         interactor.requestDefinitions();
     }
 
     @Override
     public void onDefinitionsReceived(List<Word> words) {
         view.displayWords(words);
+    }
+
+    @Override
+    public void onWordAlreadyExists(String wordString) {
+        view.displayError("Word " + wordString + " already exists!");
+    }
+
+    @Override
+    public void onWordAlreadyExists() {
+        view.displayError("Some words already existed, they will not be added.");
     }
 
     @Override

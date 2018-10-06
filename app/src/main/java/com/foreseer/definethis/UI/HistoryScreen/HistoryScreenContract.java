@@ -1,6 +1,7 @@
 package com.foreseer.definethis.UI.HistoryScreen;
 
 import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.UI.HistoryScreen.RecyclerView.SwipeToDeleteCallback;
 
 import java.util.List;
 
@@ -9,9 +10,12 @@ public interface HistoryScreenContract {
     interface HistoryView {
         void displayWords(List<Word> wordList);
         void displayPromptDialog();
+        void displayError(String errorMessage);
 
         void saveLastSortedType(SortType sortType);
         SortType getLastSortedType();
+
+        void initializeRecyclerView(int direction, SwipeToDeleteCallback.SwipeToDeleteCallbackListener listener);
     }
 
     interface HistoryPresenter {
@@ -37,8 +41,13 @@ public interface HistoryScreenContract {
 
         void finish();
 
+        boolean hasWords();
+
         interface HistoryInteractorListener {
             void onDefinitionsReceived(List<Word> words);
+            void onWordAlreadyExists(String wordString);
+            void onWordAlreadyExists();
+
             SortType returnDefaultSortType();
         }
     }

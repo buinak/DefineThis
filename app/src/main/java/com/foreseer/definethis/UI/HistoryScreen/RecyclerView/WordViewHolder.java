@@ -3,6 +3,7 @@ package com.foreseer.definethis.UI.HistoryScreen.RecyclerView;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -24,6 +25,9 @@ public class WordViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.textView_date)
     TextView textViewDate;
+
+    @BindView(R.id.layout_history_word)
+    ConstraintLayout layout;
 
     public WordViewHolder(View itemView) {
         super(itemView);

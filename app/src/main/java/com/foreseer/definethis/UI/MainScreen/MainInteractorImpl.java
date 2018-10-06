@@ -54,7 +54,9 @@ public class MainInteractorImpl implements MainScreenContract.MainInteractor {
         }
 
         if (isCached(word)) {
-            listener.onWordDefinitionsReceived(Repository.getWord(word));
+            Word result = Repository.getWord(word);
+            Repository.saveWord(result);
+            listener.onWordDefinitionsReceived(result);
             return;
         }
 

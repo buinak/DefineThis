@@ -3,6 +3,7 @@ package com.foreseer.definethis.UI.HistoryScreen;
 import com.foreseer.definethis.Data.Models.DeletedRecord;
 import com.foreseer.definethis.Data.Models.Word;
 import com.foreseer.definethis.Data.Repository;
+import com.foreseer.definethis.UI.HistoryScreen.RecyclerView.SwipeToDeleteCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,8 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Konstantin "Foreseer" Buinak on 22.06.2017.
  */
 
-public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInteractor {
+public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInteractor,
+        SwipeToDeleteCallback.SwipeToDeleteCallbackListener {
 
     private HistoryInteractorListener listener;
     private List<Word> lastRequested;
@@ -101,8 +103,16 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
             Repository.removeDeletedRecord(record.getId());
             for (Word word :
                     record.getWords()) {
-                lastRequested.add(word);
-                Repository.saveWord(word);
+                if (!lastRequested.contains(word)) {
+                    lastRequested.add(word);
+                    Repository.saveWord(word);
+                } else {
+                    if (record.getWords().size() == 1) {
+                        listener.onWordAlreadyExists(word.getWord());
+                    } else {
+                        listener.onWordAlreadyExists();
+                    }
+                }
             }
             listener.onDefinitionsReceived(processWords(lastRequested, lastSorted));
         }
@@ -110,7 +120,10 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
 
     @Override
     public void resetHistory() {
-        DeletedRecord record = new DeletedRecord(UUID.randomUUID().getMostSignificantBits(), lastRequested);
+        Repository.deleteAllDeletedRecords();
+        deletedRecords.removeAllElements();
+
+        DeletedRecord record = new DeletedRecord(lastRequested);
         deletedRecords.push(record);
         Repository.saveDeletedRecord(record);
 
@@ -122,6 +135,11 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
     public void finish() {
         requestDispose();
         listener = null;
+    }
+
+    @Override
+    public boolean hasWords() {
+        return (lastRequested.size() > 0);
     }
 
     private void requestDispose() {
@@ -193,4 +211,23 @@ public class HistoryInteractorImpl implements HistoryScreenContract.HistoryInter
         }
     }
 
+    @Override
+    public void onRemoved(String wordString) {
+        Word wordToDelete = null;
+        for (Word word :
+                lastRequested) {
+            if (word.getWord().equals(wordString)){
+                wordToDelete = word;
+                break;
+            }
+        }
+        lastRequested.remove(wordToDelete);
+
+        DeletedRecord newRecord = new DeletedRecord(wordToDelete);
+        deletedRecords.push(newRecord);
+        Repository.saveDeletedRecord(newRecord);
+
+        Repository.deleteWord(wordString);
+        listener.onDefinitionsReceived(lastRequested);
+    }
 }

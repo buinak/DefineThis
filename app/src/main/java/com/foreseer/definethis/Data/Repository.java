@@ -42,7 +42,7 @@ public class Repository {
 
     public static void saveWord(Word word) {
 
-        if (wasWordPreviouslyRequested(word.getWord())) {
+        if (isWordCachedInWordDatabase(word.getWord())) {
             return;
         }
         try (Realm realm = Realm.getDefaultInstance()) {
@@ -104,10 +104,36 @@ public class Repository {
     }
 
     public static boolean wasWordPreviouslyRequested(String word) {
+        return isWordCachedInDeletedRecordsDatabase(word) ||
+                isWordCachedInWordDatabase(word);
+    }
+
+    private static boolean isWordCachedInWordDatabase(String word) {
         boolean result = false;
         Realm realm = null;
         try {
             realm = getWordInstance();
+            realm.beginTransaction();
+            RealmResults<RealmWord> words = realm.where(RealmWord.class)
+                    .equalTo("word", word)
+                    .findAll();
+            if (words.size() > 0) {
+                result = true;
+            }
+            realm.commitTransaction();
+        } finally {
+            if (realm != null) {
+                realm.close();
+            }
+        }
+        return result;
+    }
+
+    private static boolean isWordCachedInDeletedRecordsDatabase(String word) {
+        boolean result = false;
+        Realm realm = null;
+        try {
+            realm = getDeletedRecordsInstance();
             realm.beginTransaction();
             RealmResults<RealmWord> words = realm.where(RealmWord.class)
                     .equalTo("word", word)
@@ -129,10 +155,38 @@ public class Repository {
             return null;
         }
 
+        if (isWordCachedInWordDatabase(word)){
+            return getWordFromWordDatabase(word);
+        } else {
+            return getWordFromDeletedRecordsDatabase(word);
+        }
+    }
+
+    @NonNull
+    private static Word getWordFromWordDatabase(String word) {
         Realm realm = null;
         Word resultWord;
         try {
             realm = getWordInstance();
+            realm.beginTransaction();
+            RealmResults<RealmWord> results = realm.where(RealmWord.class)
+                    .equalTo("word", word)
+                    .findAll();
+            resultWord = RealmUtils.realmWordToModelWord(results.get(0));
+        } finally {
+            if (realm != null) {
+                realm.close();
+            }
+        }
+        return resultWord;
+    }
+
+    @NonNull
+    private static Word getWordFromDeletedRecordsDatabase(String word) {
+        Realm realm = null;
+        Word resultWord;
+        try {
+            realm = getDeletedRecordsInstance();
             realm.beginTransaction();
             RealmResults<RealmWord> results = realm.where(RealmWord.class)
                     .equalTo("word", word)
@@ -155,6 +209,15 @@ public class Repository {
         }
     }
 
+    public static void deleteWord(String word){
+        try (Realm realm = getWordInstance()){
+            realm.executeTransaction(r -> {
+                RealmResults<RealmWord> results = r.where(RealmWord.class).equalTo("word", word).findAll();
+                results.deleteAllFromRealm();
+            });
+        }
+    }
+
     public static void removeDeletedRecord(long id){
         try (Realm realm = getDeletedRecordsInstance()){
             realm.executeTransaction(r -> {
@@ -167,8 +230,9 @@ public class Repository {
     public static void deleteAllDeletedRecords(){
         try (Realm realm = getDeletedRecordsInstance()){
             realm.executeTransaction(r -> {
-                RealmResults<RealmDeletedRecord> results = r.where(RealmDeletedRecord.class).findAll();
-                results.deleteAllFromRealm();
+//                RealmResults<RealmDeletedRecord> results = r.where(RealmDeletedRecord.class).findAll();
+//                results.deleteAllFromRealm();
+                r.deleteAll();
             });
         }
     }
