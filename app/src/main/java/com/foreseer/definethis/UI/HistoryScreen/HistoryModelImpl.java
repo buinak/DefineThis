@@ -1,7 +1,7 @@
 package com.foreseer.definethis.UI.HistoryScreen;
 
-import com.foreseer.definethis.Data.Models.DeletedRecord;
-import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.Data.Entities.DefineThis.DeletedRecord;
+import com.foreseer.definethis.Data.Entities.DefineThis.Word;
 import com.foreseer.definethis.Data.Repository;
 import com.foreseer.definethis.UI.HistoryScreen.RecyclerView.SwipeToDeleteCallback;
 
@@ -43,7 +43,7 @@ public class HistoryModelImpl implements HistoryScreenContract.HistoryModel,
 
 
     private void requestDeletedRecords(){
-        deletedRecordsRequest = Observable.just(Repository.getAllDeletedRecords())
+        deletedRecordsRequest = Observable.just(Repository.getInstance().getAllDeletedRecords())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> deletedRecords = result);
@@ -51,7 +51,7 @@ public class HistoryModelImpl implements HistoryScreenContract.HistoryModel,
 
     @Override
     public void requestDefinitions(HistoryScreenContract.SortType sortType) {
-        wordRequest = Observable.just(Repository.getAllWords())
+        wordRequest = Observable.just(Repository.getInstance().getAllWords())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .map(words -> processWords(words, sortType))
@@ -99,12 +99,12 @@ public class HistoryModelImpl implements HistoryScreenContract.HistoryModel,
     public void requestUndo() {
         if (!deletedRecords.empty()){
             DeletedRecord record = deletedRecords.pop();
-            Repository.removeDeletedRecord(record.getId());
+            Repository.getInstance().deleteDeletedRecord(record.getId());
             for (Word word :
                     record.getWords()) {
                 if (!lastRequested.contains(word)) {
                     lastRequested.add(word);
-                    Repository.saveWord(word);
+                    Repository.getInstance().saveWord(word);
                 } else {
                     if (record.getWords().size() == 1) {
                         listener.onWordAlreadyExists(word.getWord());
@@ -119,15 +119,15 @@ public class HistoryModelImpl implements HistoryScreenContract.HistoryModel,
 
     @Override
     public void resetHistory() {
-        Repository.deleteAllDeletedRecords();
+        Repository.getInstance().deleteAllDeletedRecords();
         deletedRecords.removeAllElements();
 
         DeletedRecord record = new DeletedRecord(lastRequested);
         deletedRecords.push(record);
-        Repository.saveDeletedRecord(record);
+        Repository.getInstance().saveDeletedRecord(record);
 
         lastRequested = new ArrayList<>();
-        Repository.deleteAllWords();
+        Repository.getInstance().deleteAllWords();
     }
 
     @Override
@@ -224,9 +224,9 @@ public class HistoryModelImpl implements HistoryScreenContract.HistoryModel,
 
         DeletedRecord newRecord = new DeletedRecord(wordToDelete);
         deletedRecords.push(newRecord);
-        Repository.saveDeletedRecord(newRecord);
+        Repository.getInstance().saveDeletedRecord(newRecord);
 
-        Repository.deleteWord(wordString);
+        Repository.getInstance().deleteWord(wordString);
         listener.onDefinitionsReceived(lastRequested);
     }
 }

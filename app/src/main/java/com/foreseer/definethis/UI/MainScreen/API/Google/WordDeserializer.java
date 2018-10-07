@@ -1,7 +1,7 @@
 package com.foreseer.definethis.UI.MainScreen.API.Google;
 
-import com.foreseer.definethis.Data.Models.Definition;
-import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.Data.Entities.DefineThis.Definition;
+import com.foreseer.definethis.Data.Entities.DefineThis.Word;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

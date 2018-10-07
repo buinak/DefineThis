@@ -1,6 +1,6 @@
 package com.foreseer.definethis.UI.WordInformationScreen.RecyclerView;
 
-import com.foreseer.definethis.Data.Models.Definition;
+import com.foreseer.definethis.Data.Entities.DefineThis.Definition;
 
 public interface DefinitionRecyclerViewContract {
 

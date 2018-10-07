@@ -1,4 +1,4 @@
-package com.foreseer.definethis.Data.Models;
+package com.foreseer.definethis.Data.Entities.DefineThis;
 
 import android.os.Parcel;
 import android.os.Parcelable;

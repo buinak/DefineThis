@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.Data.Entities.DefineThis.Word;
 import com.foreseer.definethis.R;
 import com.foreseer.definethis.UI.WordInformationScreen.WordInformationViewImpl;
 

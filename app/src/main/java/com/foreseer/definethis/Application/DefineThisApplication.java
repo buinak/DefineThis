@@ -30,13 +30,13 @@ public class DefineThisApplication extends Application {
                 .schemaVersion(0)
                 .build();
         Realm.setDefaultConfiguration(wordRealmConfig);
-        Repository.setWordConfiguration(wordRealmConfig);
+        Repository.getInstance().setWordConfiguration(wordRealmConfig);
 
         RealmConfiguration deletedRecordsRealmConfig = new RealmConfiguration.Builder()
                 .name(DELETED_RECORDS_DATABASE)
                 .schemaVersion(0)
                 .build();
-        Repository.setDeletedRecordsConfiguration(deletedRecordsRealmConfig);
+        Repository.getInstance().setDeletedRecordsConfiguration(deletedRecordsRealmConfig);
     }
 
     @Override

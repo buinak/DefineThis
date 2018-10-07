@@ -1,4 +1,4 @@
-package com.foreseer.definethis.Data.Models.Realm;
+package com.foreseer.definethis.Data.Entities.Realm;
 
 import java.util.Date;
 

@@ -1,6 +1,6 @@
 package com.foreseer.definethis.UI.MainScreen;
 
-import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.Data.Entities.DefineThis.Word;
 import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionRecyclerViewContract;
 
 public interface MainScreenContract {
@@ -49,6 +49,7 @@ public interface MainScreenContract {
 
             void onRequestStarted();
             void onWordNotFound(String word);
+            void onCorrectWord();
             void onIncorrectWord();
             void onError(Exception error, boolean custom);
         }

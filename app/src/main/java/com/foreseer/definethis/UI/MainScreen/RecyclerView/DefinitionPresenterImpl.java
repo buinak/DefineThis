@@ -1,7 +1,6 @@
 package com.foreseer.definethis.UI.MainScreen.RecyclerView;
 
-import com.foreseer.definethis.Data.Models.Definition;
-import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionRecyclerViewContract;
+import com.foreseer.definethis.Data.Entities.DefineThis.Definition;
 
 /**
  * Created by Foreseer on 02-Oct-18.

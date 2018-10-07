@@ -1,6 +1,6 @@
 package com.foreseer.definethis.UI.HistoryScreen;
 
-import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.Data.Entities.DefineThis.Word;
 import com.foreseer.definethis.UI.HistoryScreen.RecyclerView.SwipeToDeleteCallback;
 
 import java.util.List;

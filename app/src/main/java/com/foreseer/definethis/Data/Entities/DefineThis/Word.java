@@ -1,4 +1,4 @@
-package com.foreseer.definethis.Data.Models;
+package com.foreseer.definethis.Data.Entities.DefineThis;
 
 import java.util.Date;
 import java.util.List;

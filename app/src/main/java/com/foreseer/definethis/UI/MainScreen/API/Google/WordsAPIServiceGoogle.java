@@ -1,7 +1,7 @@
 package com.foreseer.definethis.UI.MainScreen.API.Google;
 
 
-import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.Data.Entities.DefineThis.Word;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

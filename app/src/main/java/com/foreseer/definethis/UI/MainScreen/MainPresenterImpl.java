@@ -1,6 +1,6 @@
 package com.foreseer.definethis.UI.MainScreen;
 
-import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.Data.Entities.DefineThis.Word;
 import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionModelImpl;
 import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionPresenterImpl;
 import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionRecyclerViewContract;
@@ -25,18 +25,13 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
 
     @Override
     public void onWordEntered(String word) {
-        if (validateText(word)) {
-            model.onWordDefinitionRequested(word);
-        }
+        model.onWordDefinitionRequested(word);
     }
 
     @Override
     public void onEditTextChanged(String text) {
-        view.makeProgressBarGrey();
-        hideViewElements();
-        if (validateText(text)){
-            model.onTextChanged(text);
-        }
+        model.onTextChanged(text);
+
     }
 
     private void hideViewElements(){
@@ -48,18 +43,6 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
         view = null;
         model.finish();
         model = null;
-    }
-
-    private boolean validateText(String text){
-        /*if (text.equals("")){
-            view.showError("Can't define nothing!");
-            return false;
-        }*/
-        if (StringUtils.isNumeric(text)){
-            view.showError("Numbers not allowed!");
-            return false;
-        }
-        return true;
     }
 
 
@@ -101,8 +84,14 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
     }
 
     @Override
+    public void onCorrectWord() {
+        view.makeProgressBarGrey();
+        hideViewElements();
+    }
+
+    @Override
     public void onIncorrectWord() {
-        onError(new Exception("Inoorrect word! Please, type one word to be defined."), true);
+        onError(new Exception("Incorrect word! Please, type one word to be defined."), true);
     }
 
     @Override

@@ -2,14 +2,14 @@ package com.foreseer.definethis.Data;
 
 import android.support.annotation.NonNull;
 
-import com.foreseer.definethis.Data.Models.Definition;
-import com.foreseer.definethis.Data.Models.DeletedRecord;
-import com.foreseer.definethis.Data.Models.Realm.RealmDefinition;
-import com.foreseer.definethis.Data.Models.Realm.RealmDeletedRecord;
-import com.foreseer.definethis.Data.Models.Realm.RealmPhonetic;
-import com.foreseer.definethis.Data.Models.Realm.RealmSynonym;
-import com.foreseer.definethis.Data.Models.Realm.RealmWord;
-import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.Data.Entities.DefineThis.Definition;
+import com.foreseer.definethis.Data.Entities.DefineThis.DeletedRecord;
+import com.foreseer.definethis.Data.Entities.Realm.RealmDefinition;
+import com.foreseer.definethis.Data.Entities.Realm.RealmDeletedRecord;
+import com.foreseer.definethis.Data.Entities.Realm.RealmPhonetic;
+import com.foreseer.definethis.Data.Entities.Realm.RealmSynonym;
+import com.foreseer.definethis.Data.Entities.Realm.RealmWord;
+import com.foreseer.definethis.Data.Entities.DefineThis.Word;
 
 import java.util.ArrayList;
 import java.util.List;

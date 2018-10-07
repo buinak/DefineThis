@@ -5,8 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import com.foreseer.definethis.Data.Models.Word;
-
 public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
 
     private SwipeToDeleteCallbackListener listener;

@@ -1,18 +1,11 @@
 package com.foreseer.definethis.Data;
 
-import android.app.Application;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.foreseer.definethis.Application.DefineThisApplication;
-import com.foreseer.definethis.Data.Models.Definition;
-import com.foreseer.definethis.Data.Models.DeletedRecord;
-import com.foreseer.definethis.Data.Models.Realm.RealmDefinition;
-import com.foreseer.definethis.Data.Models.Realm.RealmDeletedRecord;
-import com.foreseer.definethis.Data.Models.Realm.RealmPhonetic;
-import com.foreseer.definethis.Data.Models.Realm.RealmSynonym;
-import com.foreseer.definethis.Data.Models.Realm.RealmWord;
-import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.Data.Entities.DefineThis.DeletedRecord;
+import com.foreseer.definethis.Data.Entities.Realm.RealmDeletedRecord;
+import com.foreseer.definethis.Data.Entities.Realm.RealmWord;
+import com.foreseer.definethis.Data.Entities.DefineThis.Word;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,27 +13,41 @@ import java.util.Stack;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
  * Created by Konstantin "Foreseer" Buinak on 22.06.2017.
  */
 
-public class Repository {
+public class Repository implements DataSource{
 
-    private static RealmConfiguration wordConfiguration;
-    private static RealmConfiguration deletedRecordsConfiguration;
+    private static DataSource instance;
 
-    public static void setWordConfiguration(RealmConfiguration wordConfiguration) {
-        Repository.wordConfiguration = wordConfiguration;
+    private RealmConfiguration wordConfiguration;
+    private RealmConfiguration deletedRecordsConfiguration;
+
+    private Repository() {
     }
 
-    public static void setDeletedRecordsConfiguration(RealmConfiguration deletedRecordsConfiguration) {
-        Repository.deletedRecordsConfiguration = deletedRecordsConfiguration;
+    public static DataSource getInstance(){
+        if (instance == null){
+            instance = new Repository();
+        }
+        return instance;
     }
 
-    public static void saveWord(Word word) {
+    @Override
+    public void setWordConfiguration(RealmConfiguration wordConfiguration) {
+        this.wordConfiguration = wordConfiguration;
+    }
+
+    @Override
+    public void setDeletedRecordsConfiguration(RealmConfiguration deletedRecordsConfiguration) {
+        this.deletedRecordsConfiguration = deletedRecordsConfiguration;
+    }
+
+    @Override
+    public void saveWord(Word word) {
 
         if (isWordCachedInWordDatabase(word.getWord())) {
             return;
@@ -53,7 +60,8 @@ public class Repository {
         }
     }
 
-    public static void saveDeletedRecord(DeletedRecord deletedRecord){
+    @Override
+    public void saveDeletedRecord(DeletedRecord deletedRecord){
         try (Realm realm = getDeletedRecordsInstance()){
             realm.executeTransaction(r -> {
                 RealmDeletedRecord record = RealmUtils.deletedRecordToRealmDeletedRecord(deletedRecord);
@@ -62,7 +70,8 @@ public class Repository {
         }
     }
 
-    public static List<Word> getAllWords() {
+    @Override
+    public List<Word> getAllWords() {
         Realm realm = null;
         List<Word> result = new ArrayList<>();
         try {
@@ -81,7 +90,9 @@ public class Repository {
         }
         return result;
     }
-    public static Stack<DeletedRecord> getAllDeletedRecords() {
+
+    @Override
+    public Stack<DeletedRecord> getAllDeletedRecords() {
         Realm realm = null;
         List<DeletedRecord> result = new ArrayList<>();
         try {
@@ -103,12 +114,13 @@ public class Repository {
         return resultStack;
     }
 
-    public static boolean wasWordPreviouslyRequested(String word) {
+    @Override
+    public boolean wasWordPreviouslyRequested(String word) {
         return isWordCachedInDeletedRecordsDatabase(word) ||
                 isWordCachedInWordDatabase(word);
     }
 
-    private static boolean isWordCachedInWordDatabase(String word) {
+    private boolean isWordCachedInWordDatabase(String word) {
         boolean result = false;
         Realm realm = null;
         try {
@@ -129,7 +141,7 @@ public class Repository {
         return result;
     }
 
-    private static boolean isWordCachedInDeletedRecordsDatabase(String word) {
+    private boolean isWordCachedInDeletedRecordsDatabase(String word) {
         boolean result = false;
         Realm realm = null;
         try {
@@ -150,7 +162,8 @@ public class Repository {
         return result;
     }
 
-    public static Word getWord(String word) {
+    @Override
+    public Word getWord(String word) {
         if (!wasWordPreviouslyRequested(word)) {
             return null;
         }
@@ -163,7 +176,7 @@ public class Repository {
     }
 
     @NonNull
-    private static Word getWordFromWordDatabase(String word) {
+    private Word getWordFromWordDatabase(String word) {
         Realm realm = null;
         Word resultWord;
         try {
@@ -182,7 +195,7 @@ public class Repository {
     }
 
     @NonNull
-    private static Word getWordFromDeletedRecordsDatabase(String word) {
+    private Word getWordFromDeletedRecordsDatabase(String word) {
         Realm realm = null;
         Word resultWord;
         try {
@@ -200,7 +213,8 @@ public class Repository {
         return resultWord;
     }
 
-    public static void deleteAllWords() {
+    @Override
+    public void deleteAllWords() {
         try (Realm realm = getWordInstance()) {
             realm.executeTransaction(r -> {
                 RealmResults<RealmWord> results = r.where(RealmWord.class).findAll();
@@ -209,7 +223,8 @@ public class Repository {
         }
     }
 
-    public static void deleteWord(String word){
+    @Override
+    public void deleteWord(String word){
         try (Realm realm = getWordInstance()){
             realm.executeTransaction(r -> {
                 RealmResults<RealmWord> results = r.where(RealmWord.class).equalTo("word", word).findAll();
@@ -218,7 +233,8 @@ public class Repository {
         }
     }
 
-    public static void removeDeletedRecord(long id){
+    @Override
+    public void deleteDeletedRecord(long id){
         try (Realm realm = getDeletedRecordsInstance()){
             realm.executeTransaction(r -> {
                 RealmResults<RealmDeletedRecord> results = r.where(RealmDeletedRecord.class).equalTo("id", id).findAll();
@@ -227,7 +243,8 @@ public class Repository {
         }
     }
 
-    public static void deleteAllDeletedRecords(){
+    @Override
+    public void deleteAllDeletedRecords(){
         try (Realm realm = getDeletedRecordsInstance()){
             realm.executeTransaction(r -> {
 //                RealmResults<RealmDeletedRecord> results = r.where(RealmDeletedRecord.class).findAll();
@@ -237,11 +254,11 @@ public class Repository {
         }
     }
 
-    private static Realm getWordInstance(){
+    private Realm getWordInstance(){
         return Realm.getInstance(wordConfiguration);
     }
 
-    private static Realm getDeletedRecordsInstance(){
+    private Realm getDeletedRecordsInstance(){
         return Realm.getInstance(deletedRecordsConfiguration);
     }
 }

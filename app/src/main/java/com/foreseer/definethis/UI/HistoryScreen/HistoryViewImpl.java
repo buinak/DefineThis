@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.Data.Entities.DefineThis.Word;
 import com.foreseer.definethis.Application.DefineThisApplication;
 import com.foreseer.definethis.R;
 import com.foreseer.definethis.UI.HistoryScreen.RecyclerView.HistoryRecyclerViewAdapter;

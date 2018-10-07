@@ -1,8 +1,10 @@
 package com.foreseer.definethis.UI.MainScreen;
 
-import com.foreseer.definethis.Data.Models.Word;
+import com.foreseer.definethis.Data.Entities.DefineThis.Word;
 import com.foreseer.definethis.UI.MainScreen.API.WordAPIClient;
 import com.foreseer.definethis.Data.Repository;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,8 +29,12 @@ public class MainModelImpl implements MainScreenContract.MainModel {
     private Disposable request;
     private Disposable subjectDisposable;
 
+    private String lastRequested;
+
     public MainModelImpl(MainModelListener listener) {
         this.listener = listener;
+        lastRequested = "";
+
         initializePublishSubject();
     }
 
@@ -38,28 +44,35 @@ public class MainModelImpl implements MainScreenContract.MainModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(s -> {
-                    listener.onRequestStarted();
                     onWordDefinitionRequested(s);
                 });
     }
 
     @Override
     public void onWordDefinitionRequested(String word) {
-        disposeRequest();
-
         word = word.toLowerCase();
 
         if (!validateWord(word)) {
+            listener.onIncorrectWord();
             return;
         }
 
+        if (word.equals(lastRequested)){
+            return;
+        }
+        lastRequested = word;
+        disposeRequest();
+
+        listener.onCorrectWord();
+
         if (isCached(word)) {
-            Word result = Repository.getWord(word);
-            Repository.saveWord(result);
+            Word result = Repository.getInstance().getWord(word);
+            Repository.getInstance().saveWord(result);
             listener.onWordDefinitionsReceived(result);
             return;
         }
 
+        listener.onRequestStarted();
         request = WordAPIClient.getGoogleApiClient().getWordDefinition(word)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -78,26 +91,27 @@ public class MainModelImpl implements MainScreenContract.MainModel {
     }
 
     private boolean isCached(String word) {
-        if (Repository.wasWordPreviouslyRequested(word)) {
+        if (Repository.getInstance().wasWordPreviouslyRequested(word)) {
             return true;
         }
         return false;
     }
 
     private boolean validateWord(String word) {
+        if (StringUtils.isNumeric(word)){
+            return false;
+        }
+
         if (word.contains(" ")) {
             if (word.split(" ").length != 2) {
-                listener.onIncorrectWord();
                 return false;
             }
             if (!word.startsWith("to ")) {
-                listener.onIncorrectWord();
                 return false;
             }
         }
 
         if (!word.equals("")) {
-            listener.onRequestStarted();
             return true;
         } else {
             listener.onEmptyRequestReceived();
@@ -108,7 +122,7 @@ public class MainModelImpl implements MainScreenContract.MainModel {
     private void processResult(Word word) {
         fixPhoneticsString(word);
 
-        Repository.saveWord(word);
+        Repository.getInstance().saveWord(word);
         listener.onWordDefinitionsReceived(word);
     }
 
@@ -122,11 +136,7 @@ public class MainModelImpl implements MainScreenContract.MainModel {
 
     @Override
     public void onTextChanged(String text) {
-        if (!text.equals("")) {
-            subject.onNext(text);
-        } else {
-            subject.onNext(text);
-        }
+        subject.onNext(text);
     }
 
     @Override

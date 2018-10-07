@@ -19,7 +19,7 @@ public class WordInformationModelImpl implements WordInformationContract.WordInf
 
     @Override
     public void requestWord(String word) {
-        request = Observable.just(Repository.getWord(word))
+        request = Observable.just(Repository.getInstance().getWord(word))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
