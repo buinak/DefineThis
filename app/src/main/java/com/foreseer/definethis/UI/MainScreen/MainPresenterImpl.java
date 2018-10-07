@@ -68,6 +68,7 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
     @Override
     public void onEmptyRequestReceived() {
         view.hideProgressBar();
+        hideViewElements();
         view.makeProgressBarGrey();
     }
 

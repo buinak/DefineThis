@@ -52,15 +52,22 @@ public class MainModelImpl implements MainScreenContract.MainModel {
     public void onWordDefinitionRequested(String word) {
         word = word.toLowerCase();
 
+        if (word.equals(lastRequested)){
+            return;
+        }
+        lastRequested = word;
+
+        if (word.equals("")){
+            listener.onEmptyRequestReceived();
+            return;
+        }
+
         if (!validateWord(word)) {
             listener.onIncorrectWord();
             return;
         }
 
-        if (word.equals(lastRequested)){
-            return;
-        }
-        lastRequested = word;
+
         disposeRequest();
 
         listener.onCorrectWord();
@@ -111,12 +118,7 @@ public class MainModelImpl implements MainScreenContract.MainModel {
             }
         }
 
-        if (!word.equals("")) {
-            return true;
-        } else {
-            listener.onEmptyRequestReceived();
-            return false;
-        }
+        return true;
     }
 
     private void processResult(Word word) {
