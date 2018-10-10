@@ -18,7 +18,6 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
         this.view = view;
         model = new MainModelImpl(this);
 
-        view.hideWordLayout();
     }
 
     @Override
@@ -30,14 +29,10 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
     public void onEditTextChanged(String text) {
         model.onTextChanged(text);
 
-        hideViewElements();
+        view.hideDefinitions();
         view.makeProgressBarGrey();
         view.hidePhonetics();
         view.showProgressBar();
-    }
-
-    private void hideViewElements(){
-        view.hideWordLayout();
     }
 
     @Override
@@ -53,7 +48,8 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
         view.stopProgressBar();
         view.hideProgressBar();
 
-        view.showWordLayout();
+
+        view.showDefinitions();
         view.showPhonetics();
     }
 
@@ -71,16 +67,13 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
     @Override
     public void onEmptyRequestReceived() {
         view.stopProgressBar();
-        hideViewElements();
         view.makeProgressBarGrey();
     }
 
     @Override
     public void onRequestStarted() {
         view.resetError();
-        hideViewElements();
         view.startProgressBar();
-        view.showProgressBar();
 
         view.hidePhonetics();
     }
@@ -93,7 +86,6 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
     @Override
     public void onCorrectWord() {
         view.makeProgressBarGrey();
-        hideViewElements();
     }
 
     @Override

@@ -48,9 +48,6 @@ public class MainViewImpl extends AppCompatActivity implements MainScreenContrac
     @BindView(R.id.textView_phonetics)
     TextView textViewPhonetics;
 
-    @BindView(R.id.layout_information)
-    ConstraintLayout layoutInformation;
-
     /* RECYCLER VIEW */
 
     @BindView(R.id.recyclerView_information)
@@ -200,21 +197,21 @@ public class MainViewImpl extends AppCompatActivity implements MainScreenContrac
     public void hidePhonetics() {
         textViewPhonetics.setVisibility(View.GONE);
     }
+
+    @Override
+    public void hideDefinitions() {
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showDefinitions() {
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void setPhoneticsTextView(String text) {
         textViewPhonetics.setText(text);
     }
-
-    @Override
-    public void hideWordLayout() {
-        layoutInformation.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showWordLayout() {
-        layoutInformation.setVisibility(View.VISIBLE);
-    }
-
     /*
       UTILS METHODS
      */

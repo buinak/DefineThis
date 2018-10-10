@@ -22,10 +22,11 @@ public interface MainScreenContract {
         void showPhonetics();
         void hidePhonetics();
 
+        void hideDefinitions();
+        void showDefinitions();
+
         void setPhoneticsTextView(String text);
 
-        void hideWordLayout();
-        void showWordLayout();
     }
 
     interface MainPresenter {
