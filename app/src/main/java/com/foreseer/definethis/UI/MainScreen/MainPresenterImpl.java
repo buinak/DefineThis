@@ -5,8 +5,6 @@ import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionModelImpl;
 import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionPresenterImpl;
 import com.foreseer.definethis.UI.MainScreen.RecyclerView.DefinitionRecyclerViewContract;
 
-import org.apache.commons.lang3.StringUtils;
-
 
 /**
  * Created by Konstantin "Foreseer" Buinak on 21.05.2017.
@@ -32,6 +30,10 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
     public void onEditTextChanged(String text) {
         model.onTextChanged(text);
 
+        hideViewElements();
+        view.makeProgressBarGrey();
+        view.hidePhonetics();
+        view.showProgressBar();
     }
 
     private void hideViewElements(){
@@ -48,9 +50,11 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
 
     private void onViewRequestFinished(){
         view.makeProgressBarGreen();
+        view.stopProgressBar();
         view.hideProgressBar();
 
         view.showWordLayout();
+        view.showPhonetics();
     }
 
     @Override
@@ -59,7 +63,6 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
         DefinitionRecyclerViewContract.DefinitionPresenter presenter = new DefinitionPresenterImpl(model);
         view.setAdapter(presenter);
 
-        view.setWordTextView(word.getWord());
         view.setPhoneticsTextView(word.getPhonetics().get(0));
 
         onViewRequestFinished();
@@ -67,7 +70,7 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
 
     @Override
     public void onEmptyRequestReceived() {
-        view.hideProgressBar();
+        view.stopProgressBar();
         hideViewElements();
         view.makeProgressBarGrey();
     }
@@ -76,7 +79,10 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
     public void onRequestStarted() {
         view.resetError();
         hideViewElements();
+        view.startProgressBar();
         view.showProgressBar();
+
+        view.hidePhonetics();
     }
 
     @Override
@@ -97,7 +103,7 @@ public class MainPresenterImpl implements MainScreenContract.MainPresenter, Main
 
     @Override
     public void onError(Exception error, boolean custom) {
-        view.hideProgressBar();
+        view.stopProgressBar();
         view.makeProgressBarGrey();
         if (!custom) {
             if (error.getMessage().contains("404")) {

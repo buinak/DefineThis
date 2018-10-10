@@ -45,14 +45,8 @@ public class MainViewImpl extends AppCompatActivity implements MainScreenContrac
     @BindView(R.id.tToolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.textView_word)
-    TextView textViewWord;
-
     @BindView(R.id.textView_phonetics)
     TextView textViewPhonetics;
-
-    @BindView(R.id.cardView_wordPhonetics)
-    CardView cardViewWordPhonetics;
 
     @BindView(R.id.layout_information)
     ConstraintLayout layoutInformation;
@@ -166,12 +160,12 @@ public class MainViewImpl extends AppCompatActivity implements MainScreenContrac
     }
 
     @Override
-    public void showProgressBar() {
+    public void startProgressBar() {
         progressBar.setIndeterminate(true);
     }
 
     @Override
-    public void hideProgressBar() {
+    public void stopProgressBar() {
         progressBar.setIndeterminate(false);
     }
 
@@ -188,28 +182,27 @@ public class MainViewImpl extends AppCompatActivity implements MainScreenContrac
     }
 
     @Override
-    public void setWordTextView(String text) {
-        textViewWord.setText(text);
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showPhonetics() {
+        textViewPhonetics.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hidePhonetics() {
+        textViewPhonetics.setVisibility(View.GONE);
+    }
     @Override
     public void setPhoneticsTextView(String text) {
         textViewPhonetics.setText(text);
-    }
-
-    @Override
-    public void hideWordPhoneticsCard() {
-        cardViewWordPhonetics.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showWordPhoneticsCard() {
-        cardViewWordPhonetics.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideWordTextView() {
-        textViewWord.setVisibility(View.GONE);
     }
 
     @Override

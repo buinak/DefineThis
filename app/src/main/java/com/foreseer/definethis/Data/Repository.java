@@ -182,9 +182,11 @@ public class Repository implements DataSource{
         try {
             realm = getWordInstance();
             realm.beginTransaction();
+
             RealmResults<RealmWord> results = realm.where(RealmWord.class)
                     .equalTo("word", word)
                     .findAll();
+
             resultWord = RealmUtils.realmWordToModelWord(results.get(0));
         } finally {
             if (realm != null) {

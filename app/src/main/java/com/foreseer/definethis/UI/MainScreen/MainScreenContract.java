@@ -12,18 +12,17 @@ public interface MainScreenContract {
         void showError(String error);
         void resetError();
 
-        void showProgressBar();
-        void hideProgressBar();
+        void startProgressBar();
+        void stopProgressBar();
         void makeProgressBarGreen();
         void makeProgressBarGrey();
+        void hideProgressBar();
+        void showProgressBar();
 
-        void setWordTextView(String text);
+        void showPhonetics();
+        void hidePhonetics();
+
         void setPhoneticsTextView(String text);
-
-        void hideWordPhoneticsCard();
-        void showWordPhoneticsCard();
-
-        void hideWordTextView();
 
         void hideWordLayout();
         void showWordLayout();
