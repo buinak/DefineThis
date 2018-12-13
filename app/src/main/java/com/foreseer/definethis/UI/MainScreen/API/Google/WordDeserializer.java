@@ -20,14 +20,12 @@ public class WordDeserializer implements JsonDeserializer<Word> {
     @Override
     public Word deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         String jsonString = json.toString();
-
-        JsonObject objectWord = json.getAsJsonObject();
+        JsonArray jsonArrayInitial = json.getAsJsonArray();
+        JsonObject objectWord = jsonArrayInitial.get(0).getAsJsonObject();
         String wordString = objectWord.get("word").getAsString();
-        JsonArray phoneticArray = objectWord.get("phonetic").getAsJsonArray();
+        String phonetic = objectWord.get("phonetic").getAsString();
         List<String> phonetics = new ArrayList<>();
-        for (int i = 0; i < phoneticArray.size(); i++) {
-            phonetics.add(phoneticArray.get(i).getAsString());
-        }
+        phonetics.add(phonetic);
         List<Definition> definitions = new ArrayList<>();
         for (Map.Entry<String, JsonElement> entry : objectWord.getAsJsonObject("meaning").entrySet()){
             String partOfSpeech = entry.getKey();
