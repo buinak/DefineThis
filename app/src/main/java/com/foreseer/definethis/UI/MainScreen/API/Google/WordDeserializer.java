@@ -20,8 +20,7 @@ public class WordDeserializer implements JsonDeserializer<Word> {
     @Override
     public Word deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         String jsonString = json.toString();
-        JsonArray jsonArrayInitial = json.getAsJsonArray();
-        JsonObject objectWord = jsonArrayInitial.get(0).getAsJsonObject();
+        JsonObject objectWord = json.getAsJsonObject();
         String wordString = objectWord.get("word").getAsString();
         String phonetic = objectWord.get("phonetic").getAsString();
         List<String> phonetics = new ArrayList<>();
